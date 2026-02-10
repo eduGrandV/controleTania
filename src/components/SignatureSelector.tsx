@@ -1,87 +1,86 @@
 import { BiUser, BiX } from "react-icons/bi";
 
-export const AUTHORIZED_USERS = [
-  "Clebitânia Carvalho",
-  "Wagner Dia Araújo",
-  "Lara Secchi",
-  "Daiane Souza",
-  "Operador 01",
-  "Operador 02",
-  "Coordenador",
+// Lista de nomes (devem ser IGUAIS aos nomes dos arquivos na pasta public/assinaturas)
+// Ex: Se o arquivo é "Joao Silva.png", o nome aqui deve ser "Joao Silva"
+const USERS = [
+
+"ANTONIO JHEYSON SILVA ALVES",
+"ADRIELDOSSSILVA",
+"CARLIENE F DA SILVA",
+"CLEISON NUNES DE SOUZA",
+"CRISTIANE MARIA",
+"EDUARDO S. SILVA",
+"ELIANE CRUZ SOUZA",
+"ELLEN VITORIA",
+"ERIC MARTINS ARAUJO",
+"EXPEDITO CARLOS",
+"FABIOLA DOS S BARROS",
+"FABRICIA",
+"FABRICIO CASTRO",
+"FABRICIO SILVA RODRIGUES",
+"FRANCINALDO F COELHO",
+"HIGO JULLYS",
+"JOSAPHA NUNES",
+"JOSE NEUTON",
+"LAECIO DE SOUZA SOARES",
+"LEANDRO CASTRO",
+"LEIDIANE PASSOS",
+"LIDIA AMORIM BRITO",
+"MARCIA MARIA DE MOURA SANTOS",
+"MARCIANA BRITO",
+"MATEUS CASTOR",
+"MATEUS SILVA PEREIRA",
+"PEDRO GOMES",
+"PERLA NAIANE",
+"RAFAEL S OLIVEIRA",
+"RONIER GUIMARAES SANTOS",
+"RONIERISON FERREIRA",
+"WAGNER DIAS ARAÚJO"
 ];
 
-interface SignatureSelectorProps {
-  value: string | null;
-  onChange: (value: string | null) => void;
-  placeholder?: string;
+interface Props {
+  value: string | null;              // O nome da pessoa selecionada
+  onChange: (val: string | null) => void; 
 }
 
-export const SignatureSelector = ({
-  value,
-  onChange,
-  placeholder = "ASsinar...",
-}: SignatureSelectorProps) => {
+export const SignatureSelector = ({ value, onChange }: Props) => {
+  
+  // ESTADO 1: JÁ ASSINADO (Mostra a imagem)
   if (value) {
-    return(
-        <div className="relative group w-full h-10 flex items-center justify-center bg-white border border-gray-300 rounded-lg p-1 hover:border-blue-400 transition-all">
-        {/* Imagem da Assinatura */}
+    return (
+      <div className="relative group w-full h-12 flex items-center justify-center border border-green-300 bg-green-50 rounded-lg">
+        
         <img
-          src={`/assinaturas/${value}.png`}
-          alt={`Assinatura de ${value}`}
-          className="h-full object-contain max-w-full"
-          onError={(e) => {
-            // Fallback visual caso a imagem não exista na pasta public
-            e.currentTarget.style.display = 'none';
-            e.currentTarget.parentElement?.classList.add('bg-red-50');
-            const span = document.createElement('span');
-            span.className = "text-[9px] text-red-500 font-bold text-center leading-tight";
-            span.innerText = `${value}\n(Img não encontrada)`;
-            e.currentTarget.parentElement?.appendChild(span);
-          }}
+          src={`/assinaturas/${value}.png`} 
+          alt="assinatura" 
+          className="h-10 object-contain"
+          
         />
-
-        {/* Tooltip com o nome ao passar o mouse */}
-        <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
-          {value}
-        </div>
-
-        {/* Botão de Remover */}
+        
+        
         <button 
-          onClick={(e) => {
-            e.stopPropagation(); 
-            onChange(null);
-          }}
-          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-red-600"
-          title="Remover assinatura"
+          onClick={() => onChange(null)}
+          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
         >
-          <BiX size={14} />
+          <BiX />
         </button>
       </div>
-    )
+    );
   }
 
-  //não assinado
-  return(
-    <div className="relative w-full h-10 group">
-      <div className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none group-hover:text-blue-500 transition-colors">
-        <BiUser size={16} />
-      </div>
+  return (
+    <div className="relative w-full">
+      <BiUser className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
       <select
-        className="w-full h-full text-xs font-medium border border-gray-300 rounded-lg bg-gray-50 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none appearance-none pl-8 pr-2 cursor-pointer hover:bg-white hover:border-gray-400 transition-all"
-        onChange={(e) => {
-          if (e.target.value) onChange(e.target.value);
-        }}
+        className="w-full pl-7 pr-2 py-1 text-xs border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer"
+        onChange={(e) => onChange(e.target.value)}
         value=""
       >
-        <option value="" disabled hidden>
-          {placeholder}
-        </option>
-        {AUTHORIZED_USERS.map((user) => (
-          <option key={user} value={user}>
-            {user}
-          </option>
+        <option value=" " disabled selected>Assinar...</option>
+        {USERS.map((user) => (
+          <option key={user} value={user}>{user}</option>
         ))}
       </select>
     </div>
-  )
+  );
 };
