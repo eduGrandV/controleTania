@@ -1,5 +1,6 @@
 "use client";
 
+import { SignatureSelector } from "@/src/components/SignatureSelector";
 import { useState } from "react";
 
 const QUESTIONS = [
@@ -65,22 +66,6 @@ export default function MonitoramentoConduta() {
     coordinator: null as string | null,
   });
 
-  const handleSignature = (type: "coordinator", file: File | null) => {
-    if (file) {
-      setSignatures((prev) => ({
-        ...prev,
-        [type]: URL.createObjectURL(file),
-      }));
-    }
-  };
-
-  const signStandard = (type: "coordinator") => {
-    setSignatures((prev) => ({ ...prev, [type]: "/raivans.png" }));
-  };
-
-  const removeSignature = (type: "coordinator") => {
-    setSignatures((prev) => ({ ...prev, [type]: null }));
-  };
 
   const [checklist, setChecklist] = useState<ChecklistRow[]>(
     QUESTIONS.map((_, i) => ({
@@ -275,11 +260,10 @@ export default function MonitoramentoConduta() {
                   <button
                     onClick={() => setArea("embaladora")}
                     className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2
-        ${
-          area === "embaladora"
-            ? "bg-white text-red-600 shadow-sm ring-1 ring-gray-200"
-            : "text-gray-500 hover:text-gray-700"
-        }`}
+        ${area === "embaladora"
+                        ? "bg-white text-red-600 shadow-sm ring-1 ring-gray-200"
+                        : "text-gray-500 hover:text-gray-700"
+                      }`}
                   >
                     <span className={area === "embaladora" ? "font-bold" : ""}>
                       Embaladora
@@ -290,11 +274,10 @@ export default function MonitoramentoConduta() {
                   <button
                     onClick={() => setArea("camara")}
                     className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2
-        ${
-          area === "camara"
-            ? "bg-white text-red-600 shadow-sm ring-1 ring-gray-200"
-            : "text-gray-500 hover:text-gray-700"
-        }`}
+        ${area === "camara"
+                        ? "bg-white text-red-600 shadow-sm ring-1 ring-gray-200"
+                        : "text-gray-500 hover:text-gray-700"
+                      }`}
                   >
                     <span className={area === "camara" ? "font-bold" : ""}>
                       Câmara Fria
@@ -329,79 +312,10 @@ export default function MonitoramentoConduta() {
                   Coordenador de Segurança
                 </label>
                 <div className="min-h-12 border border-gray-200 rounded-lg flex items-center justify-center bg-white p-1">
-                  {signatures.coordinator ? (
-                    <div className="relative group w-full h-full flex justify-center items-center py-1">
-                      <img
-                        src={signatures.coordinator}
-                        alt="Assinatura Coordenador"
-                        className="h-8 sm:h-10 object-contain max-w-full"
-                      />
-                      <button
-                        onClick={() => removeSignature("coordinator")}
-                        className="
-                  absolute -top-2 -right-2 
-                  w-6 h-6 sm:w-6 sm:h-6 
-                  bg-red-500 text-white rounded-full 
-                  flex items-center justify-center text-xs 
-                  shadow-lg hover:bg-red-600 cursor-pointer z-50
-                  transition-opacity duration-200
-                  opacity-100 lg:opacity-0 lg:group-hover:opacity-100
-                "
-                        title="Remover assinatura"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex w-full gap-2">
-                      <button
-                        onClick={() => signStandard("coordinator")}
-                        className="flex-1 px-2 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:shadow-md transition-all flex items-center justify-center gap-1 sm:gap-2"
-                      >
-                        <svg
-                          className="w-3 h-3 sm:w-4 sm:h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                          />
-                        </svg>
-                        Assinar
-                      </button>
-                      <label className="flex-1 px-2 py-2 bg-linear-to-r from-gray-100 to-gray-50 text-gray-700 rounded-lg text-xs sm:text-sm font-medium hover:shadow-md transition-all flex items-center justify-center gap-1 sm:gap-2 border border-gray-200 cursor-pointer hover:bg-gray-100">
-                        <svg
-                          className="w-3 h-3 sm:w-4 sm:h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                          />
-                        </svg>
-                        Upload
-                        <input
-                          type="file"
-                          className="hidden"
-                          accept="image/*"
-                          onChange={(e) =>
-                            handleSignature(
-                              "coordinator",
-                              e.target.files?.[0] || null,
-                            )
-                          }
-                        />
-                      </label>
-                    </div>
-                  )}
+                  <SignatureSelector
+                    value={signatures.coordinator}
+                    onChange={(v) => setSignatures((prev) => ({ ...prev, coordinator: v }))}
+                  />
                 </div>
               </div>
             </div>
@@ -655,13 +569,12 @@ export default function MonitoramentoConduta() {
                         >
                           <div
                             className={`w-12 h-12 mx-auto rounded-lg flex items-center justify-center cursor-pointer transition-all transform hover:scale-105 active:scale-95
-                            ${
-                              status === "ok"
+                            ${status === "ok"
                                 ? "bg-green-100 border-2 border-green-500 text-green-800"
                                 : status === "no"
                                   ? "bg-red-100 border-2 border-red-500 text-red-800"
                                   : "bg-gray-50 border-2 border-gray-200 hover:border-gray-300 text-gray-400"
-                            }`}
+                              }`}
                           >
                             <span className="font-bold text-sm">
                               {status === "ok"

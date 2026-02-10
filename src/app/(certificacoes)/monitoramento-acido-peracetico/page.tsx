@@ -1,5 +1,6 @@
 "use client";
 
+import { SignatureSelector } from "@/src/components/SignatureSelector";
 import { useState } from "react";
 
 const MACHINES = {
@@ -62,7 +63,9 @@ interface ReadingLog {
 
 export default function MonitoramentoAcido() {
   const [currentMachine, setCurrentMachine] = useState<MachineKey>("chesy");
+
   const [monitorSignature, setMonitorSignature] = useState<string | null>(null);
+
   const [showInstructions, setShowInstructions] = useState(true);
   const [showAlerts, setShowAlerts] = useState(true);
 
@@ -258,11 +261,10 @@ export default function MonitoramentoAcido() {
                   <button
                     key={key}
                     onClick={() => setCurrentMachine(key)}
-                    className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-300 ${
-                      currentMachine === key
-                        ? "bg-white shadow-lg border-2 border-indigo-500 transform scale-[1.02]"
-                        : "bg-white/70 hover:bg-white hover:shadow-md border border-gray-200 hover:border-indigo-300"
-                    }`}
+                    className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-300 ${currentMachine === key
+                      ? "bg-white shadow-lg border-2 border-indigo-500 transform scale-[1.02]"
+                      : "bg-white/70 hover:bg-white hover:shadow-md border border-gray-200 hover:border-indigo-300"
+                      }`}
                   >
                     <div className="w-10 h-10 rounded-lg bg-linear-to-r from-indigo-100 to-purple-100 flex items-center justify-center">
                       <span className="text-xl">{machine.icon}</span>
@@ -622,12 +624,11 @@ export default function MonitoramentoAcido() {
                             updateField(index, "ppm", e.target.value)
                           }
                           className={`w-full bg-white border rounded-lg py-2.5 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:border-transparent transition-all
-                            ${
-                              log.status === "normal"
-                                ? "border-gray-200 text-gray-700 focus:ring-indigo-500"
-                                : log.status === "warning"
-                                  ? "border-amber-200 text-amber-700 focus:ring-amber-500"
-                                  : "border-red-200 text-red-700 focus:ring-red-500"
+                            ${log.status === "normal"
+                              ? "border-gray-200 text-gray-700 focus:ring-indigo-500"
+                              : log.status === "warning"
+                                ? "border-amber-200 text-amber-700 focus:ring-amber-500"
+                                : "border-red-200 text-red-700 focus:ring-red-500"
                             }
                           `}
                           placeholder="Ex: 250"
@@ -687,78 +688,10 @@ export default function MonitoramentoAcido() {
                     {/* RESPONSÁVEL */}
                     <td className="py-3 px-4">
                       <div className="flex items-center justify-center">
-                        {log.responsible ? (
-                          <div className="relative group">
-                            <img
-                              src={log.responsible}
-                              alt="Assinatura"
-                              className="h-12 w-32 object-contain border border-gray-200 rounded-lg bg-white p-2 shadow-sm"
-                            />
-                            <button
-                              onClick={() => removeSignature(index)}
-                              className="
-                                              absolute -top-2 -right-2 
-                                              w-6 h-6 sm:w-6 sm:h-6 
-                                              bg-red-500 text-white rounded-full 
-                                              flex items-center justify-center text-xs 
-                                              shadow-lg hover:bg-red-600 cursor-pointer z-50
-                                              transition-opacity duration-200
-                                              
-                                              /* LÓGICA DE VISIBILIDADE */
-                                              opacity-100                /* Mobile/Tablet: Sempre visível */
-                                              lg:opacity-0               /* Desktop: Invisível por padrão */
-                                              lg:group-hover:opacity-100 /* Desktop: Visível ao passar o mouse */
-                                            "
-                              title="Remover assinatura"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => signStandard(index)}
-                              className="px-3 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg text-xs font-medium hover:shadow-md transition-all flex items-center gap-2"
-                            >
-                              <svg
-                                className="w-3 h-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                                />
-                              </svg>
-                              Eu
-                            </button>
-                            <label className="px-3 py-2 bg-linear-to-r from-gray-100 to-gray-50 text-gray-700 rounded-lg text-xs font-medium hover:shadow-md transition-all flex items-center gap-2 border border-gray-200 cursor-pointer hover:bg-gray-100">
-                              <svg
-                                className="w-3 h-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                                />
-                              </svg>
-                              Upload
-                              <input
-                                type="file"
-                                className="hidden"
-                                accept="image/*"
-                                onChange={(e) => handleFileUpload(index, e)}
-                              />
-                            </label>
-                          </div>
-                        )}
+                        <SignatureSelector
+                          value={log.responsible}
+                          onChange={(v) => updateField(index, "responsible", v || "")}
+                        />
                       </div>
                     </td>
 
@@ -766,13 +699,12 @@ export default function MonitoramentoAcido() {
                     <td className="py-3 px-4">
                       <div className="flex justify-center">
                         <span
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium ${
-                            log.status === "normal"
-                              ? "bg-green-100 text-green-800 border border-green-200"
-                              : log.status === "warning"
-                                ? "bg-amber-100 text-amber-800 border border-amber-200"
-                                : "bg-red-100 text-red-800 border border-red-200"
-                          }`}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium ${log.status === "normal"
+                            ? "bg-green-100 text-green-800 border border-green-200"
+                            : log.status === "warning"
+                              ? "bg-amber-100 text-amber-800 border border-amber-200"
+                              : "bg-red-100 text-red-800 border border-red-200"
+                            }`}
                         >
                           {log.status === "normal"
                             ? "✓ Normal"
@@ -863,66 +795,10 @@ export default function MonitoramentoAcido() {
                     <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
                       <div className="flex flex-col items-center">
                         <div className="w-full h-20 mb-3 flex items-end justify-center">
-                          {monitorSignature ? (
-                            <div className="relative group w-full">
-                              <img
-                                src={monitorSignature}
-                                alt="Assinatura Monitora"
-                                className="h-16 object-contain mx-auto"
-                              />
-                              <button
-                                onClick={removeMonitorSignature}
-                                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-red-600"
-                                title="Remover assinatura"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="flex gap-3 opacity-50 hover:opacity-100 transition-opacity">
-                              <button
-                                onClick={signMonitor}
-                                className="px-4 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm font-medium hover:shadow-md transition-all flex items-center gap-2"
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                                  />
-                                </svg>
-                                Minha Assinatura
-                              </button>
-                              <label className="px-4 py-2 bg-linear-to-r from-gray-100 to-gray-50 text-gray-700 rounded-lg text-sm font-medium hover:shadow-md transition-all flex items-center gap-2 border border-gray-200 cursor-pointer hover:bg-gray-100">
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                                  />
-                                </svg>
-                                Upload Assinatura
-                                <input
-                                  type="file"
-                                  className="hidden"
-                                  accept="image/*"
-                                  onChange={uploadMonitor}
-                                />
-                              </label>
-                            </div>
-                          )}
+                          <SignatureSelector
+                            value={monitorSignature}
+                            onChange={(v) => setMonitorSignature(v || null)}
+                          />
                         </div>
                         <div className="w-48 h-px bg-gray-300 mb-2"></div>
                         <p className="text-sm text-gray-600">

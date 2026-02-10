@@ -1,5 +1,7 @@
 "use client";
 
+import { SignatureSelector } from "@/src/components/SignatureSelector";
+import { Signature } from "lucide-react";
 import { useState } from "react";
 import {
   BiCalendar,
@@ -204,7 +206,7 @@ export default function RegistroAcontecimentos() {
                   respectivas correções
                 </p>
               </div>
-              
+
             </div>
           </div>
         </div>
@@ -374,54 +376,10 @@ export default function RegistroAcontecimentos() {
                         </div>
 
                         <div className="h-24 border-2 border-dashed border-gray-300 rounded-lg bg-white flex items-center justify-center relative group">
-                          {log.signatureCorrection ? (
-                            <>
-                              <img
-                                src={log.signatureCorrection}
-                                alt="Assinatura"
-                                className="h-20 object-contain"
-                              />
-                              <button
-                                onClick={() =>
-                                  removeSignature(index, "signatureCorrection")
-                                }
-                                className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
-                              >
-                                <BiX size={14} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className="flex flex-col items-center gap-2">
-                              <BiUser className="text-gray-400" size={24} />
-
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() =>
-                                    signStandard(index, "signatureCorrection")
-                                  }
-                                  className="px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"
-                                >
-                                  Assinar Agora
-                                </button>
-                                <label className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                                  <BiUpload size={12} className="inline mr-1" />
-                                  Upload
-                                  <input
-                                    type="file"
-                                    className="hidden"
-                                    accept="image/*"
-                                    onChange={(e) =>
-                                      handleSignature(
-                                        index,
-                                        "signatureCorrection",
-                                        e.target.files?.[0] || null,
-                                      )
-                                    }
-                                  />
-                                </label>
-                              </div>
-                            </div>
-                          )}
+                          <SignatureSelector
+                            value={log.signatureCorrection}
+                            onChange={(n) => updateField(index, "signatureCorrection", n || '')}
+                          />
                         </div>
                       </div>
 
@@ -437,53 +395,10 @@ export default function RegistroAcontecimentos() {
                         </div>
 
                         <div className="h-24 border-2 border-dashed border-gray-300 rounded-lg bg-white flex items-center justify-center relative group">
-                          {log.signaturePacking ? (
-                            <>
-                              <img
-                                src={log.signaturePacking}
-                                alt="Assinatura"
-                                className="h-20 object-contain"
-                              />
-                              <button
-                                onClick={() =>
-                                  removeSignature(index, "signaturePacking")
-                                }
-                                className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
-                              >
-                                <BiX size={14} />
-                              </button>
-                            </>
-                          ) : (
-                            <div className="flex flex-col items-center gap-2">
-                              <BiUser className="text-gray-400" size={24} />
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() =>
-                                    signStandard(index, "signaturePacking")
-                                  }
-                                  className="px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"
-                                >
-                                  Assinar Agora
-                                </button>
-                                <label className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                                  <BiUpload size={12} className="inline mr-1" />
-                                  Upload
-                                  <input
-                                    type="file"
-                                    className="hidden"
-                                    accept="image/*"
-                                    onChange={(e) =>
-                                      handleSignature(
-                                        index,
-                                        "signaturePacking",
-                                        e.target.files?.[0] || null,
-                                      )
-                                    }
-                                  />
-                                </label>
-                              </div>
-                            </div>
-                          )}
+                          <SignatureSelector
+                            value={log.signaturePacking}
+                            onChange={(n) => updateField(index, "signaturePacking", n || '')}
+                          />
                         </div>
                       </div>
                     </div>
@@ -590,7 +505,7 @@ export default function RegistroAcontecimentos() {
               Registro de Acontecimentos Inusuais
             </p>
             <p className="mt-1">
-               Última revisão:{" "}
+              Última revisão:{" "}
               {new Date().toLocaleDateString("pt-BR")}
             </p>
           </div>

@@ -3,7 +3,7 @@ import { BiUser, BiX, BiUpload } from "react-icons/bi";
 
 // Lista de nomes (Mantive a mesma)
 const USERS = [
-  "ADRIELDOS S.SILVA",
+  "ADRIEL DOS S.SILVA",
   "ANTONIO JHEYSON SILVA ALVES",
   "CARLIENE F DA SILVA",
   "CLEISON NUNES DE SOUZA",
@@ -63,20 +63,20 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
 
     return (
       <div className="relative group w-full h-12 flex items-center justify-center border border-green-300 bg-green-50 rounded-lg">
-        <img 
-          src={imgSrc} 
-          alt="Assinatura" 
+        <img
+          src={imgSrc}
+          alt="Assinatura"
           className="h-10 object-contain"
           onError={(e) => {
             if (!isUpload) {
-             
-              e.currentTarget.style.display = 'none'; 
+
+              e.currentTarget.style.display = 'none';
               e.currentTarget.parentElement!.innerText = value;
             }
           }}
         />
-        
-        <button 
+
+        <button
           onClick={() => onChange(null)}
           className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
         >
@@ -105,14 +105,14 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
           onChange={(e) => onChange(e.target.value)}
           value=""
         >
-          <option defaultChecked disabled selected>Assinar...</option>
+          <option value={""} disabled >Assinar...</option>
           {USERS.map((user) => (
             <option className="text-black" key={user} value={user}>{user}</option>
           ))}
         </select>
       </div>
 
-      
+
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}

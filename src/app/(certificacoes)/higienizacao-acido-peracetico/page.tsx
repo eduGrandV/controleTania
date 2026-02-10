@@ -1,5 +1,7 @@
 "use client";
 
+import { SignatureSelector } from "@/src/components/SignatureSelector";
+import { Sign } from "crypto";
 import { useState, useEffect } from "react";
 
 const SECTORS = {
@@ -219,11 +221,10 @@ export default function HigienizacaoAcidoPeracetico() {
                   <button
                     key={key}
                     onClick={() => setCurrentSector(key)}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                      currentSector === key
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${currentSector === key
                         ? "bg-white shadow-lg border-2 border-blue-500 transform scale-105"
                         : "bg-white/70 hover:bg-white hover:shadow-md border border-gray-200 hover:border-blue-300"
-                    }`}
+                      }`}
                   >
                     <span className="text-2xl">{sector.icon}</span>
                     <div className="text-left">
@@ -270,11 +271,10 @@ export default function HigienizacaoAcidoPeracetico() {
                 <button
                   key={month.id}
                   onClick={() => setSelectedMonth(month.id)}
-                  className={`p-3 rounded-lg text-center transition-all ${
-                    selectedMonth === month.id
+                  className={`p-3 rounded-lg text-center transition-all ${selectedMonth === month.id
                       ? `${month.color} border-2 border-blue-500 shadow-md transform scale-105`
                       : "bg-gray-50 hover:bg-gray-100 border border-gray-200"
-                  }`}
+                    }`}
                 >
                   <div className="text-xs font-bold text-gray-800">
                     {month.id}
@@ -481,80 +481,12 @@ export default function HigienizacaoAcidoPeracetico() {
                     {/* RESPONSÁVEL / ASSINATURA */}
                     <td className="py-3 px-4">
                       <div className="flex items-center justify-center">
-                        {log.assinatura ? (
-                          <div className="relative group">
-                            <div className="flex items-center gap-3">
-                              <img
-                                src={log.assinatura}
-                                alt="Assinatura"
-                                className="h-12 w-32 object-contain border border-gray-200 rounded-lg bg-white p-2 shadow-sm"
-                              />
-                              <button
-                                onClick={() => removeSignature(index)}
-                                className="
-                                              absolute -top-2 -right-2 
-                                              w-6 h-6 sm:w-6 sm:h-6 
-                                              bg-red-500 text-white rounded-full 
-                                              flex items-center justify-center text-xs 
-                                              shadow-lg hover:bg-red-600 cursor-pointer z-50
-                                              transition-opacity duration-200
-                                              
-                                              /* LÓGICA DE VISIBILIDADE */
-                                              opacity-100                /* Mobile/Tablet: Sempre visível */
-                                              lg:opacity-0               /* Desktop: Invisível por padrão */
-                                              lg:group-hover:opacity-100 /* Desktop: Visível ao passar o mouse */
-                                            "
-                                title="Remover assinatura"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => signStandard(index)}
-                              className="px-4 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm font-medium hover:shadow-md transition-all flex items-center gap-2"
-                            >
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                                />
-                              </svg>
-                              Assinar
-                            </button>
-                            <label className="px-4 py-2 bg-linear-to-r from-gray-100 to-gray-50 text-gray-700 rounded-lg text-sm font-medium hover:shadow-md transition-all flex items-center gap-2 border border-gray-200 cursor-pointer hover:bg-gray-100">
-                              <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                                />
-                              </svg>
-                              Upload
-                              <input
-                                type="file"
-                                className="hidden"
-                                accept="image/*"
-                                onChange={(e) => handleFileUpload(index, e)}
-                              />
-                            </label>
-                          </div>
-                        )}
+                        <SignatureSelector
+                          value={log.assinatura}
+                          onChange={(n) =>
+                            updateField(index, "assinatura", n || "")
+                          }
+                        />
                       </div>
                     </td>
 
@@ -582,13 +514,12 @@ export default function HigienizacaoAcidoPeracetico() {
                     <td className="py-3 px-4 flex justify-center items-cente">
                       <div className="flex justify-center items-center">
                         <span
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium flex justify-center items-center${
-                            log.status === "completed"
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium flex justify-center items-center${log.status === "completed"
                               ? "bg-green-100 text-green-800 border border-green-200"
                               : log.status === "corrective"
                                 ? "bg-amber-100 text-amber-800 border border-amber-200"
                                 : "bg-gray-100 text-gray-800 border border-gray-200"
-                          }`}
+                            }`}
                         >
                           {log.status === "completed"
                             ? "✓ Concluído"

@@ -1,4 +1,7 @@
 "use client";
+import { SignatureSelector } from "@/src/components/SignatureSelector";
+import { Sign } from "crypto";
+import { Signature } from "lucide-react";
 import { useState } from "react";
 
 const SECTORS = {
@@ -240,11 +243,10 @@ export default function TanqueLavagemFruta() {
                   <button
                     key={key}
                     onClick={() => setCurrentSector(key)}
-                    className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-300 ${
-                      currentSector === key
-                        ? "bg-white shadow-lg border-2 border-teal-500 transform scale-[1.02]"
-                        : "bg-white/70 hover:bg-white hover:shadow-md border border-gray-200 hover:border-teal-300"
-                    }`}
+                    className={`flex items-center gap-4 p-4 rounded-xl transition-all duration-300 ${currentSector === key
+                      ? "bg-white shadow-lg border-2 border-teal-500 transform scale-[1.02]"
+                      : "bg-white/70 hover:bg-white hover:shadow-md border border-gray-200 hover:border-teal-300"
+                      }`}
                   >
                     <div className="w-10 h-10 rounded-lg bg-linear-to-r from-teal-100 to-emerald-100 flex items-center justify-center">
                       <span className="text-xl">{sector.icon}</span>
@@ -622,80 +624,10 @@ export default function TanqueLavagemFruta() {
                     {/* RESPONSÁVEL */}
                     <td className="py-3 px-4">
                       <div className="flex items-center justify-center">
-                        {log.responsible ? (
-                          <div className="relative group">
-                            <div className="flex items-center gap-3">
-                              <img
-                                src={log.responsible}
-                                alt="Assinatura"
-                                className="h-10 w-24 object-contain border border-gray-200 rounded-lg bg-white p-2"
-                              />
-                              <button
-                                onClick={() => removeSignature(index)}
-                                className="
-                                              absolute -top-2 -right-2 
-                                              w-6 h-6 sm:w-6 sm:h-6 
-                                              bg-red-500 text-white rounded-full 
-                                              flex items-center justify-center text-xs 
-                                              shadow-lg hover:bg-red-600 cursor-pointer z-50
-                                              transition-opacity duration-200
-                                              
-                                              /* LÓGICA DE VISIBILIDADE */
-                                              opacity-100                /* Mobile/Tablet: Sempre visível */
-                                              lg:opacity-0               /* Desktop: Invisível por padrão */
-                                              lg:group-hover:opacity-100 /* Desktop: Visível ao passar o mouse */
-                                            "
-                                title="Remover assinatura"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => signStandard(index)}
-                              className="px-3 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg text-xs font-medium hover:shadow-md transition-all flex items-center gap-2"
-                            >
-                              <svg
-                                className="w-3 h-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                                />
-                              </svg>
-                              Eu
-                            </button>
-                            <label className="px-3 py-2 bg-linear-to-r from-gray-100 to-gray-50 text-gray-700 rounded-lg text-xs font-medium hover:shadow-md transition-all flex items-center gap-2 border border-gray-200 cursor-pointer hover:bg-gray-100">
-                              <svg
-                                className="w-3 h-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                                />
-                              </svg>
-                              Upload
-                              <input
-                                type="file"
-                                className="hidden"
-                                accept="image/*"
-                                onChange={(e) => handleFileUpload(index, e)}
-                              />
-                            </label>
-                          </div>
-                        )}
+                        <SignatureSelector
+                          value={log.responsible}
+                          onChange={newValue => updateField(index, "responsible", newValue || "")}
+                        />
                       </div>
                     </td>
 
@@ -703,11 +635,10 @@ export default function TanqueLavagemFruta() {
                     <td className="py-3 px-4">
                       <div className="flex justify-center">
                         <span
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium ${
-                            log.status === "completed"
-                              ? "bg-green-100 text-green-800 border border-green-200"
-                              : "bg-gray-100 text-gray-800 border border-gray-200"
-                          }`}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium ${log.status === "completed"
+                            ? "bg-green-100 text-green-800 border border-green-200"
+                            : "bg-gray-100 text-gray-800 border border-gray-200"
+                            }`}
                         >
                           {log.status === "completed"
                             ? "Concluído"
@@ -780,84 +711,11 @@ export default function TanqueLavagemFruta() {
                     </p>
                   </div>
 
-                  <div className="w-full h-32 mb-4 flex items-end justify-center border border-gray-300 rounded-lg bg-white">
-                    {signatures.responsible ? (
-                      <div className="relative group w-full h-full flex items-end justify-center">
-                        <img
-                          src={signatures.responsible}
-                          alt="Assinatura Responsável"
-                          className="h-24 object-contain"
-                        />
-                        <button
-                          onClick={() => removeFooterSignature("responsible")}
-                          className="
-                                              absolute -top-2 -right-2 
-                                              w-6 h-6 sm:w-6 sm:h-6 
-                                              bg-red-500 text-white rounded-full 
-                                              flex items-center justify-center text-xs 
-                                              shadow-lg hover:bg-red-600 cursor-pointer z-50
-                                              transition-opacity duration-200
-                                              
-                                              /* LÓGICA DE VISIBILIDADE */
-                                              opacity-100                /* Mobile/Tablet: Sempre visível */
-                                              lg:opacity-0               /* Desktop: Invisível por padrão */
-                                              lg:group-hover:opacity-100 /* Desktop: Visível ao passar o mouse */
-                                            "
-                          title="Remover assinatura"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex gap-3 opacity-50 hover:opacity-100 transition-opacity py-8">
-                        <button
-                          onClick={() => signFooterStandard("responsible")}
-                          className="px-4 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm font-medium hover:shadow-md transition-all flex items-center gap-2"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                            />
-                          </svg>
-                          Minha Assinatura
-                        </button>
-                        <label className="px-4 py-2 bg-linear-to-r from-gray-100 to-gray-50 text-gray-700 rounded-lg text-sm font-medium hover:shadow-md transition-all flex items-center gap-2 border border-gray-200 cursor-pointer hover:bg-gray-100">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                            />
-                          </svg>
-                          Upload Assinatura
-                          <input
-                            type="file"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={(e) =>
-                              handleFooterSignature(
-                                "responsible",
-                                e.target.files?.[0] || null,
-                              )
-                            }
-                          />
-                        </label>
-                      </div>
-                    )}
+                  <div className="w-full h-12 mb-4 flex items-end justify-center border border-gray-300 rounded-lg bg-white">
+                    <SignatureSelector
+                      value={signatures.responsible}
+                      onChange={v => setSignatures(prev => ({ ...prev, responsible: v }))}
+                    />
                   </div>
 
                   <div className="w-56 h-px bg-gray-400 mb-2"></div>
@@ -879,84 +737,11 @@ export default function TanqueLavagemFruta() {
                     </p>
                   </div>
 
-                  <div className="w-full h-32 mb-4 flex items-end justify-center border border-gray-300 rounded-lg bg-white">
-                    {signatures.monitor ? (
-                      <div className="relative group w-full h-full flex items-end justify-center">
-                        <img
-                          src={signatures.monitor}
-                          alt="Assinatura Monitora"
-                          className="h-24 object-contain"
-                        />
-                        <button
-                          onClick={() => removeFooterSignature("monitor")}
-                          className="
-                                              absolute -top-2 -right-2 
-                                              w-6 h-6 sm:w-6 sm:h-6 
-                                              bg-red-500 text-white rounded-full 
-                                              flex items-center justify-center text-xs 
-                                              shadow-lg hover:bg-red-600 cursor-pointer z-50
-                                              transition-opacity duration-200
-                                              
-                                              /* LÓGICA DE VISIBILIDADE */
-                                              opacity-100                /* Mobile/Tablet: Sempre visível */
-                                              lg:opacity-0               /* Desktop: Invisível por padrão */
-                                              lg:group-hover:opacity-100 /* Desktop: Visível ao passar o mouse */
-                                            "
-                          title="Remover assinatura"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex gap-3 opacity-50 hover:opacity-100 transition-opacity py-8">
-                        <button
-                          onClick={() => signFooterStandard("monitor")}
-                          className="px-4 py-2 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm font-medium hover:shadow-md transition-all flex items-center gap-2"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                            />
-                          </svg>
-                          Minha Assinatura
-                        </button>
-                        <label className="px-4 py-2 bg-linear-to-r from-gray-100 to-gray-50 text-gray-700 rounded-lg text-sm font-medium hover:shadow-md transition-all flex items-center gap-2 border border-gray-200 cursor-pointer hover:bg-gray-100">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                            />
-                          </svg>
-                          Upload Assinatura
-                          <input
-                            type="file"
-                            className="hidden"
-                            accept="image/*"
-                            onChange={(e) =>
-                              handleFooterSignature(
-                                "monitor",
-                                e.target.files?.[0] || null,
-                              )
-                            }
-                          />
-                        </label>
-                      </div>
-                    )}
+                  <div className="w-full h-12 mb-4 flex items-end justify-center border border-gray-300 rounded-lg bg-white">
+                    <SignatureSelector
+                      value={signatures.monitor}
+                      onChange={v => setSignatures(prev => ({ ...prev, monitor: v }))}
+                    />
                   </div>
 
                   <div className="w-56 h-px bg-gray-400 mb-2"></div>
