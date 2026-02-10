@@ -444,21 +444,7 @@ export default function ManutencaoEquipamentos() {
                     <td key={col.id} className="p-3 border-l border-gray-100">
                       <div className="h-20 border-2 border-dashed border-gray-300 rounded-lg bg-white flex items-center justify-center relative group">
                         {col.signature ? (
-                          <>
-                            <img
-                              src={col.signature}
-                              alt="Assinatura"
-                              className="h-full object-contain p-2"
-                            />
-                            <button
-                              onClick={() =>
-                                updateColumnField(type, index, "signature", "")
-                              }
-                              className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
-                            >
-                              <BiX size={14} />
-                            </button>
-                          </>
+                          <></>
                         ) : (
                           <div className="text-center space-y-2">
                             <BiUserCheck
@@ -468,7 +454,6 @@ export default function ManutencaoEquipamentos() {
                             <SignatureSelector
                               value={col.signature}
                               onChange={(val) =>
-                                // Reutilizamos sua função updateColumnField, pois agora é só uma string
                                 updateColumnField(
                                   type,
                                   index,
