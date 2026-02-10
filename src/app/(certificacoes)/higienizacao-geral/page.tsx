@@ -1,7 +1,7 @@
 "use client";
 
+import { SignatureSelector } from "@/src/components/SignatureSelector";
 import { useState } from "react";
-
 
 const AREAS = {
   // --- GRUPO 1: PROCESSO / MÁQUINAS (DIÁRIOS) ---
@@ -291,7 +291,7 @@ const AREAS = {
     ],
     category: "Infraestrutura",
   },
-   banheiros: {
+  banheiros: {
     id: "banheirosPias",
     title: "CONTROLE DE HIGIENIZAÇÃO - Banheiros e Pias",
     frequency: "DIÁRIA (duas vezes ao dia)",
@@ -302,7 +302,7 @@ const AREAS = {
     ],
     category: "Infraestrutura",
   },
-   salaMaquinas: {
+  salaMaquinas: {
     id: "salaMaquinas",
     title: "Controle de higienização da sala de máquina",
     frequency: "SEMANAL",
@@ -313,7 +313,7 @@ const AREAS = {
     ],
     category: "Infraestrutura",
   },
-   batas: {
+  batas: {
     id: "batas",
     title: "Controle de Higienização da Batas   Packing-House",
     frequency: "DIÁRIA (em dias de processamento)",
@@ -324,7 +324,6 @@ const AREAS = {
     ],
     category: "Infraestrutura",
   },
-  
 };
 
 type AreaKey = keyof typeof AREAS;
@@ -341,7 +340,6 @@ const COMPLIANCE = {
   revisedBy: "Clebitânia Carvalho",
   revisionDate: "02/01/2026",
 };
-
 
 const CATEGORIES = [
   { id: "all", name: "Todas as Áreas", color: "bg-gray-100 text-gray-800" },
@@ -395,7 +393,6 @@ export default function ControleHigienizacaoMaster() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedFrequency, setSelectedFrequency] = useState<string>("all");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-
 
   const [logs, setLogs] = useState<CleaningLog[]>([
     { id: 1, date: "", time: "", checks: {}, signature: null },
@@ -478,26 +475,11 @@ export default function ControleHigienizacaoMaster() {
     setLogs(newLogs);
   };
 
-  // === LÓGICA DE ASSINATURA ===
-  const handleRowSignature = (index: number, file: File | null) => {
-    if (file) {
-      const newLogs = [...logs];
-      newLogs[index].signature = URL.createObjectURL(file);
-      setLogs(newLogs);
-    }
-  };
 
-  const signRowStandard = (index: number) => {
-    const newLogs = [...logs];
-    newLogs[index].signature = "/raivans.png";
-    setLogs(newLogs);
-  };
 
-  const removeRowSignature = (index: number) => {
-    const newLogs = [...logs];
-    newLogs[index].signature = null;
-    setLogs(newLogs);
-  };
+ 
+
+  
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-3 md:p-6 font-sans text-sm">
@@ -768,10 +750,9 @@ export default function ControleHigienizacaoMaster() {
                       >
                         <div className="flex justify-between items-start">
                           <span className="font-medium text-sm">
-                            {area.title.replace(
-                              "CONTROLE DE HIGIENIZAÇÃO - ",
-                              "",
-                            ).toUpperCase()}
+                            {area.title
+                              .replace("CONTROLE DE HIGIENIZAÇÃO - ", "")
+                              .toUpperCase()}
                           </span>
                           {currentTab === key && (
                             <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">
@@ -909,174 +890,190 @@ export default function ControleHigienizacaoMaster() {
               </div>
 
               {/* TABELA */}
-             <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200 shadow-sm bg-white">
-  {/* Container interno com largura mínima para forçar o layout correto */}
-  <div className="min-w-max">
-    <table className="w-full text-left border-collapse">
-      <thead className="bg-gray-50 sticky top-0 z-20 shadow-sm">
-        <tr>
-          {/* COLUNA FIXA: DATA */}
-          <th className="py-3 px-4 font-semibold text-gray-700 text-xs sm:text-sm uppercase tracking-wider sticky left-0 z-30 bg-gray-50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-              </svg>
-              Data
-            </div>
-          </th>
+              <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200 shadow-sm bg-white">
+                {/* Container interno com largura mínima para forçar o layout correto */}
+                <div className="min-w-max">
+                  <table className="w-full text-left border-collapse">
+                    <thead className="bg-gray-50 sticky top-0 z-20 shadow-sm">
+                      <tr>
+                        {/* COLUNA FIXA: DATA */}
+                        <th className="py-3 px-4 font-semibold text-gray-700 text-xs sm:text-sm uppercase tracking-wider sticky left-0 z-30 bg-gray-50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
+                          <div className="flex items-center gap-2">
+                            <svg
+                              className="w-4 h-4 text-gray-500"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Data
+                          </div>
+                        </th>
 
-          {/* HORÁRIO */}
-          <th className="py-3 px-4 font-semibold text-gray-700 text-xs sm:text-sm uppercase tracking-wider bg-gray-50">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-              </svg>
-              Horário
-            </div>
-          </th>
+                        {/* HORÁRIO */}
+                        <th className="py-3 px-4 font-semibold text-gray-700 text-xs sm:text-sm uppercase tracking-wider bg-gray-50">
+                          <div className="flex items-center gap-2">
+                            <svg
+                              className="w-4 h-4 text-gray-500"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Horário
+                          </div>
+                        </th>
 
-          {/* PRODUTOS (Largura mínima para não quebrar checkboxes) */}
-          <th className="py-3 px-4 font-semibold text-gray-700 text-xs sm:text-sm uppercase tracking-wider min-w-75 bg-gray-50">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
-              </svg>
-              Produtos Utilizados
-            </div>
-          </th>
+                        {/* PRODUTOS (Largura mínima para não quebrar checkboxes) */}
+                        <th className="py-3 px-4 font-semibold text-gray-700 text-xs sm:text-sm uppercase tracking-wider min-w-75 bg-gray-50">
+                          <div className="flex items-center gap-2">
+                            <svg
+                              className="w-4 h-4 text-gray-500"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                            </svg>
+                            Produtos Utilizados
+                          </div>
+                        </th>
 
-          {/* ASSINATURA */}
-          <th className="py-3 px-4 font-semibold text-gray-700 text-xs sm:text-sm uppercase tracking-wider min-w-55 bg-gray-50">
-            <div className="flex items-center gap-2">
-              <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-              </svg>
-              Assinatura
-            </div>
-          </th>
-        </tr>
-      </thead>
-      
-      <tbody className="divide-y divide-gray-100 bg-white">
-        {logs.map((log, index) => (
-          <tr key={log.id} className="hover:bg-gray-50 transition-colors group">
-            
-            {/* COLUNA DATA FIXA */}
-            <td className="py-3 px-4 sticky left-0 z-10 bg-white group-hover:bg-gray-50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] border-r border-gray-100">
-              <input
-                type="date"
-                value={log.date}
-                onChange={(e) => updateField(index, "date", e.target.value)}
-                className="w-32.5 bg-white border border-gray-200 rounded-lg py-2 px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              />
-            </td>
+                        {/* ASSINATURA */}
+                        <th className="py-3 px-4 font-semibold text-gray-700 text-xs sm:text-sm uppercase tracking-wider min-w-55 bg-gray-50">
+                          <div className="flex items-center gap-2">
+                            <svg
+                              className="w-4 h-4 text-gray-500"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                              <path
+                                fillRule="evenodd"
+                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            Assinatura
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
 
-            {/* HORÁRIO */}
-            <td className="py-3 px-4">
-              <input
-                type="time"
-                value={log.time}
-                onChange={(e) => updateField(index, "time", e.target.value)}
-                className="w-25 bg-white border border-gray-200 rounded-lg py-2 px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              />
-            </td>
+                    <tbody className="divide-y divide-gray-100 bg-white">
+                      {logs.map((log, index) => (
+                        <tr
+                          key={log.id}
+                          className="hover:bg-gray-50 transition-colors group"
+                        >
+                          {/* COLUNA DATA FIXA */}
+                          <td className="py-3 px-4 sticky left-0 z-10 bg-white group-hover:bg-gray-50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] border-r border-gray-100">
+                            <input
+                              type="date"
+                              value={log.date}
+                              onChange={(e) =>
+                                updateField(index, "date", e.target.value)
+                              }
+                              className="w-32.5 bg-white border border-gray-200 rounded-lg py-2 px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            />
+                          </td>
 
-            {/* PRODUTOS */}
-            <td className="py-3 px-4">
-              <div className="flex flex-wrap gap-3">
-                {activeConfig.products.map((prod) => (
-                  <label key={prod.key} className="flex items-center gap-2 cursor-pointer group/checkbox bg-gray-50 hover:bg-gray-100 px-2 py-1 rounded-md border border-transparent hover:border-gray-200 transition-all">
-                    <div className="relative">
-                      <input
-                        type="checkbox"
-                        checked={log.checks?.[prod.key] || false}
-                        onChange={() => toggleCheck(index, prod.key)}
-                        className="sr-only peer"
-                      />
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all
-                        ${log.checks?.[prod.key]
-                          ? "bg-blue-500 border-blue-500"
-                          : "bg-white border-gray-300 group-hover/checkbox:border-blue-400"
+                          {/* HORÁRIO */}
+                          <td className="py-3 px-4">
+                            <input
+                              type="time"
+                              value={log.time}
+                              onChange={(e) =>
+                                updateField(index, "time", e.target.value)
+                              }
+                              className="w-25 bg-white border border-gray-200 rounded-lg py-2 px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            />
+                          </td>
+
+                          {/* PRODUTOS */}
+                          <td className="py-3 px-4">
+                            <div className="flex flex-wrap gap-3">
+                              {activeConfig.products.map((prod) => (
+                                <label
+                                  key={prod.key}
+                                  className="flex items-center gap-2 cursor-pointer group/checkbox bg-gray-50 hover:bg-gray-100 px-2 py-1 rounded-md border border-transparent hover:border-gray-200 transition-all"
+                                >
+                                  <div className="relative">
+                                    <input
+                                      type="checkbox"
+                                      checked={log.checks?.[prod.key] || false}
+                                      onChange={() =>
+                                        toggleCheck(index, prod.key)
+                                      }
+                                      className="sr-only peer"
+                                    />
+                                    <div
+                                      className={`w-4 h-4 rounded border flex items-center justify-center transition-all
+                        ${
+                          log.checks?.[prod.key]
+                            ? "bg-blue-500 border-blue-500"
+                            : "bg-white border-gray-300 group-hover/checkbox:border-blue-400"
                         }`}
-                      >
-                        {log.checks?.[prod.key] && (
-                          <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className={`font-medium text-xs sm:text-sm transition-colors ${log.checks?.[prod.key] ? "text-blue-700" : "text-gray-700"}`}>
-                        {prod.label}
-                      </span>
-                      {prod.name && <span className="text-[10px] text-gray-500 hidden sm:block">{prod.name}</span>}
-                    </div>
-                  </label>
-                ))}
-              </div>
-            </td>
+                                    >
+                                      {log.checks?.[prod.key] && (
+                                        <svg
+                                          className="w-2.5 h-2.5 text-white"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={3}
+                                            d="M5 13l4 4L19 7"
+                                          />
+                                        </svg>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-col">
+                                    <span
+                                      className={`font-medium text-xs sm:text-sm transition-colors ${log.checks?.[prod.key] ? "text-blue-700" : "text-gray-700"}`}
+                                    >
+                                      {prod.label}
+                                    </span>
+                                    {prod.name && (
+                                      <span className="text-[10px] text-gray-500 hidden sm:block">
+                                        {prod.name}
+                                      </span>
+                                    )}
+                                  </div>
+                                </label>
+                              ))}
+                            </div>
+                          </td>
 
-            {/* ASSINATURA */}
-            <td className="py-3 px-4">
-              <div className="flex items-center gap-2 justify-center sm:justify-start">
-                {log.signature ? (
-                  <div className="relative group/sig">
-                    <img
-                      src={log.signature}
-                      alt="Assinatura"
-                      className="h-10 w-24 sm:w-32 object-contain border border-gray-200 rounded-lg bg-white p-1"
-                    />
-                    <button
-                      onClick={() => removeRowSignature(index)}
-                      className="
-                        absolute -top-2 -right-2 
-                        w-6 h-6 
-                        bg-red-500 text-white rounded-full 
-                        flex items-center justify-center text-xs 
-                        shadow-md hover:bg-red-600 cursor-pointer z-20
-                        transition-opacity duration-200
-                        opacity-100 lg:opacity-0 lg:group-hover/sig:opacity-100
-                      "
-                      title="Remover"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => signRowStandard(index)}
-                      className="px-3 py-1.5 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-lg text-xs font-medium hover:shadow-md transition-all flex items-center gap-1.5 whitespace-nowrap"
-                    >
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                      </svg>
-                      Eu
-                    </button>
-                    <label className="px-3 py-1.5 bg-linear-to-r from-gray-100 to-gray-50 text-gray-700 rounded-lg text-xs font-medium hover:shadow-md transition-all flex items-center gap-1.5 border border-gray-200 cursor-pointer hover:bg-gray-100 whitespace-nowrap">
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                      </svg>
-                      Up
-                      <input
-                        type="file"
-                        className="hidden"
-                        accept="image/*"
-                        onChange={(e) => handleRowSignature(index, e.target.files?.[0] || null)}
-                      />
-                    </label>
-                  </div>
-                )}
+                          {/* ASSINATURA */}
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-2 justify-center sm:justify-start">
+                              <SignatureSelector 
+                              value={log.signature}
+                              onChange={(v) =>
+                                updateField(index, "signature", v||"")
+                              }
+                              
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
 
               {/* RODAPÉ DA TABELA */}
               <div className="bg-linear-to-r from-gray-50 to-gray-100 p-4 border-t border-gray-200">
