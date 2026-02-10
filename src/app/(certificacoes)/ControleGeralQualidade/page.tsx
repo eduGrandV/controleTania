@@ -1,5 +1,6 @@
 "use client";
 
+import { SignatureSelector } from "@/src/components/SignatureSelector";
 import { useState } from "react";
 import {
   BiPlus,
@@ -175,64 +176,6 @@ export default function ControleGeralQualidade() {
       monitorSignature: null,
     },
   ]);
-
-  const signStandard = (
-    tab: TabType,
-    idOrField: number | string,
-    subField?: string,
-  ) => {
-    const signature = "/raivans.png";
-    handleSignatureUpdate(tab, idOrField, subField, signature);
-  };
-
-  const handleUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    tab: TabType,
-    idOrField: number | string,
-    subField?: string,
-  ) => {
-    if (e.target.files?.[0]) {
-      const signature = URL.createObjectURL(e.target.files[0]);
-      handleSignatureUpdate(tab, idOrField, subField, signature);
-    }
-  };
-
-  const removeSignature = (
-    tab: TabType,
-    idOrField: number | string,
-    subField?: string,
-  ) => {
-    handleSignatureUpdate(tab, idOrField, subField, null);
-  };
-
-  const handleSignatureUpdate = (
-    tab: TabType,
-    idOrField: number | string,
-    subField: string | undefined,
-    value: string | null,
-  ) => {
-    if (tab === "quimicos") {
-      const newLogs = [...chemicalLogs];
-      newLogs[idOrField as number].responsible = value;
-      setChemicalLogs(newLogs);
-    } else if (tab === "limpeza") {
-      const newLogs = [...cleaningLogs];
-      newLogs[idOrField as number].responsible = value;
-      setCleaningLogs(newLogs);
-    } else if (tab === "vidros") {
-      if (idOrField === "monitor")
-        setGlassSignatures((prev) => ({ ...prev, monitor: value }));
-      if (idOrField === "resp")
-        setGlassSignatures((prev) => ({ ...prev, resp: value }));
-    } else if (tab === "pragas") {
-      setPestMonitorSignature(value);
-    } else if (tab === "residuos") {
-      const newLogs = [...wasteLogs];
-      //@ts-ignore
-      newLogs[idOrField as number][subField] = value;
-      setWasteLogs(newLogs);
-    }
-  };
 
   const SignatureCell = ({
     signature,
@@ -664,11 +607,16 @@ export default function ControleGeralQualidade() {
                             </div>
                           </td>
                           <td className="py-3 px-4">
-                            <SignatureCell
-                              signature={log.responsible}
-                              onSign={() => signStandard("quimicos", idx)}
-                              onUpload={(e) => handleUpload(e, "quimicos", idx)}
-                              onRemove={() => removeSignature("quimicos", idx)}
+                            <SignatureSelector
+                              value={log.responsible}
+                              onChange={(val) =>
+                                updateStock(
+                                  activeTab === "quimicos" ? "chem" : "clean",
+                                  idx,
+                                  "responsible",
+                                  val || "",
+                                )
+                              }
                             />
                           </td>
                           <td className="py-3 px-4">
@@ -862,11 +810,16 @@ export default function ControleGeralQualidade() {
                             </div>
                           </td>
                           <td className="py-3 px-4">
-                            <SignatureCell
-                              signature={log.responsible}
-                              onSign={() => signStandard("limpeza", idx)}
-                              onUpload={(e) => handleUpload(e, "limpeza", idx)}
-                              onRemove={() => removeSignature("limpeza", idx)}
+                            <SignatureSelector
+                              value={log.responsible}
+                              onChange={(val) =>
+                                updateStock(
+                                  activeTab === "limpeza" ? "clean" : "chem",
+                                  idx,
+                                  "responsible",
+                                  val || "",
+                                )
+                              }
                             />
                           </td>
                           <td className="py-3 px-4">
@@ -1017,11 +970,11 @@ export default function ControleGeralQualidade() {
                       Quem realizou a verificação
                     </div>
                   </div>
-                  <SignatureCell
-                    signature={glassSignatures.monitor}
-                    onSign={() => signStandard("vidros", "monitor")}
-                    onUpload={(e) => handleUpload(e, "vidros", "monitor")}
-                    onRemove={() => removeSignature("vidros", "monitor")}
+                  <SignatureSelector
+                    value={glassSignatures.monitor}
+                    onChange={(val) =>
+                      setGlassSignatures((prev) => ({ ...prev, monitor: val }))
+                    }
                   />
                 </div>
                 <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
@@ -1033,11 +986,11 @@ export default function ControleGeralQualidade() {
                       Supervisor da área
                     </div>
                   </div>
-                  <SignatureCell
-                    signature={glassSignatures.resp}
-                    onSign={() => signStandard("vidros", "resp")}
-                    onUpload={(e) => handleUpload(e, "vidros", "resp")}
-                    onRemove={() => removeSignature("vidros", "resp")}
+                  <SignatureSelector
+                    value={glassSignatures.resp}
+                    onChange={(val) =>
+                      setGlassSignatures((prev) => ({ ...prev, resp: val }))
+                    }
                   />
                 </div>
               </div>
@@ -1047,7 +1000,6 @@ export default function ControleGeralQualidade() {
           {/* 4. PRAGAS */}
           {activeTab === "pragas" && (
             <div className="space-y-6">
-              
               <div className="bg-linear-to-br from-rose-500 to-pink-600 rounded-2xl p-6 text-white shadow-lg">
                 <div className="flex items-start justify-between">
                   <div>
@@ -1377,11 +1329,9 @@ export default function ControleGeralQualidade() {
                   </div>
 
                   <div className="space-y-4">
-                    <SignatureCell
-                      signature={pestMonitorSignature}
-                      onSign={() => signStandard("pragas", 0)}
-                      onUpload={(e) => handleUpload(e, "pragas", 0)}
-                      onRemove={() => removeSignature("pragas", 0)}
+                    <SignatureSelector
+                      value={pestMonitorSignature}
+                      onChange={(val) => setPestMonitorSignature(val)}
                     />
 
                     <div className="pt-4 border-t border-gray-200">
@@ -1476,60 +1426,30 @@ export default function ControleGeralQualidade() {
                             </button>
                           </td>
                           <td className="py-3 px-4">
-                            <SignatureCell
-                              signature={log.collectorSignature}
-                              onSign={() =>
-                                signStandard(
-                                  "residuos",
+                            <SignatureSelector
+                              value={log.collectorSignature}
+                              onChange={(val) =>
+                                updateWasteField(
                                   idx,
                                   "collectorSignature",
+                                  val || "",
                                 )
                               }
-                              onUpload={(e) =>
-                                handleUpload(
-                                  e,
-                                  "residuos",
-                                  idx,
-                                  "collectorSignature",
-                                )
-                              }
-                              onRemove={() =>
-                                removeSignature(
-                                  "residuos",
-                                  idx,
-                                  "collectorSignature",
-                                )
-                              }
-                              label="Responsável pelo Recolhimento"
                             />
                           </td>
                           <td className="py-3 px-4">
-                            <SignatureCell
-                              signature={log.monitorSignature}
-                              onSign={() =>
-                                signStandard(
-                                  "residuos",
+                            <SignatureSelector
+                              value={log.monitorSignature}
+                              onChange={(val) =>
+                                updateWasteField(
                                   idx,
                                   "monitorSignature",
+                                  val || "",
                                 )
                               }
-                              onUpload={(e) =>
-                                handleUpload(
-                                  e,
-                                  "residuos",
-                                  idx,
-                                  "monitorSignature",
-                                )
-                              }
-                              onRemove={() =>
-                                removeSignature(
-                                  "residuos",
-                                  idx,
-                                  "monitorSignature",
-                                )
-                              }
-                              label="Monitor Responsável"
                             />
+
+                            <></>
                           </td>
                           <td className="py-3 px-4">
                             <button

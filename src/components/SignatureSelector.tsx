@@ -69,7 +69,7 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
           className="h-10 object-contain"
           onError={(e) => {
             if (!isUpload) {
-              // Só faz o fallback de texto se NÃO for um upload manual
+             
               e.currentTarget.style.display = 'none'; 
               e.currentTarget.parentElement!.innerText = value;
             }
@@ -105,7 +105,7 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
           onChange={(e) => onChange(e.target.value)}
           value=""
         >
-          <option value="inicial" disabled selected>Assinar...</option>
+          <option defaultChecked disabled selected>Assinar...</option>
           {USERS.map((user) => (
             <option className="text-black" key={user} value={user}>{user}</option>
           ))}
