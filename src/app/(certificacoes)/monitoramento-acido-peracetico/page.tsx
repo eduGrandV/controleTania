@@ -139,17 +139,6 @@ export default function MonitoramentoAcido() {
     setReadings(newReadings);
   };
 
-  const handleFileUpload = (
-    index: number,
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const newReadings = [...readings];
-      newReadings[index].responsible = URL.createObjectURL(file);
-      setReadings(newReadings);
-    }
-  };
 
   const removeSignature = (index: number) => {
     const newReadings = [...readings];

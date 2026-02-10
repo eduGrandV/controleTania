@@ -116,25 +116,6 @@ export default function LimpezaCamarasFrias() {
 
   const activeConfig = SECTORS[currentSector];
 
-  const handleTeamSignature = (index: number, file: File | null) => {
-    if (file) {
-      const newTeam = [...team];
-      newTeam[index].signature = URL.createObjectURL(file);
-      setTeam(newTeam);
-    }
-  };
-
-  const signTeamStandard = (index: number) => {
-    const newTeam = [...team];
-    newTeam[index].signature = "/raivans.png";
-    setTeam(newTeam);
-  };
-
-  const removeTeamSignature = (index: number) => {
-    const newTeam = [...team];
-    newTeam[index].signature = null;
-    setTeam(newTeam);
-  };
 
   const toggleCheck = (dayIndex: number, itemKey: string) => {
     const newChecks = [...dailyChecks];

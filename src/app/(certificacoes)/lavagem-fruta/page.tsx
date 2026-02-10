@@ -166,15 +166,6 @@ export default function TanqueLavagemFruta() {
       }));
     }
   };
-
-  const signFooterStandard = (type: "responsible" | "monitor") => {
-    setSignatures((prev) => ({ ...prev, [type]: "/raivans.png" }));
-  };
-
-  const removeFooterSignature = (type: "responsible" | "monitor") => {
-    setSignatures((prev) => ({ ...prev, [type]: null }));
-  };
-
   // Estatísticas
   const completedLogs = logs.filter((log) => log.status === "completed").length;
   const pendingLogs = logs.filter((log) => log.status === "pending").length;

@@ -13,7 +13,7 @@ import {
   BiX,
 } from "react-icons/bi";
 import { FiAlertTriangle, FiFileText, FiX } from "react-icons/fi";
-import { TbProgressX } from "react-icons/tb";
+
 
 const COMMON_ISSUES = [
   "Objetos estranhos no processo",
@@ -140,23 +140,6 @@ export default function RegistroAcontecimentos() {
     setLogs(newLogs);
   };
 
-  const removeSignature = (
-    index: number,
-    field: "signatureCorrection" | "signaturePacking",
-  ) => {
-    const newLogs = [...logs];
-    newLogs[index][field] = null;
-
-    // Atualizar status
-    const log = newLogs[index];
-    if (!log.signatureCorrection && !log.signaturePacking) {
-      log.status = "pendente";
-    } else if (log.signatureCorrection || log.signaturePacking) {
-      log.status = "em-andamento";
-    }
-
-    setLogs(newLogs);
-  };
 
   const getStatusColor = (status: EventLog["status"]) => {
     switch (status) {
