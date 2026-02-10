@@ -443,15 +443,7 @@ export default function ManutencaoEquipamentos() {
                   {data.map((col, index) => (
                     <td key={col.id} className="p-3 border-l border-gray-100">
                       <div className="h-20 border-2 border-dashed border-gray-300 rounded-lg bg-white flex items-center justify-center relative group">
-                        {col.signature ? (
-                          <></>
-                        ) : (
-                          <div className="text-center space-y-2">
-                            <BiUserCheck
-                              className="text-gray-400 mx-auto"
-                              size={24}
-                            />
-                            <SignatureSelector
+                       <SignatureSelector
                               value={col.signature}
                               onChange={(val) =>
                                 updateColumnField(
@@ -462,8 +454,6 @@ export default function ManutencaoEquipamentos() {
                                 )
                               }
                             />
-                          </div>
-                        )}
                       </div>
                     </td>
                   ))}
@@ -669,60 +659,10 @@ export default function ManutencaoEquipamentos() {
                     </div>
                   </div>
                   <div className="h-24 border-2 border-dashed border-gray-300 rounded-lg bg-white flex items-center justify-center relative group">
-                    {log.signatureResponsible ? (
-                      <>
-                        <img
-                          src={log.signatureResponsible}
-                          alt="Assinatura"
-                          className="h-20 object-contain"
-                        />
-                        <button
-                          onClick={() =>
-                            updateRepairField(
-                              index,
-                              "signatureResponsible",
-                              null,
-                            )
-                          }
-                          className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
-                        >
-                          <BiX size={14} />
-                        </button>
-                      </>
-                    ) : (
-                      <div className="text-center space-y-2">
-                        <BiUserCheck
-                          className="text-gray-400 mx-auto"
-                          size={24}
-                        />
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() =>
-                              signRepairStandard(index, "signatureResponsible")
-                            }
-                            className="px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                          >
-                            Assinar
-                          </button>
-                          <label className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                            <BiUpload size={12} className="inline mr-1" />
-                            Upload
-                            <input
-                              type="file"
-                              className="hidden"
-                              accept="image/*"
-                              onChange={(e) =>
-                                handleRepairSignature(
-                                  index,
-                                  "signatureResponsible",
-                                  e.target.files?.[0] || null,
-                                )
-                              }
-                            />
-                          </label>
-                        </div>
-                      </div>
-                    )}
+                    <SignatureSelector
+                      value={log.signatureResponsible}
+                      onChange={(v) => updateRepairField(index, "signatureResponsible", v)}
+                    />
                   </div>
                 </div>
 
@@ -736,60 +676,10 @@ export default function ManutencaoEquipamentos() {
                     </div>
                   </div>
                   <div className="h-24 border-2 border-dashed border-gray-300 rounded-lg bg-white flex items-center justify-center relative group">
-                    {log.signatureSupervisor ? (
-                      <>
-                        <img
-                          src={log.signatureSupervisor}
-                          alt="Assinatura"
-                          className="h-20 object-contain"
-                        />
-                        <button
-                          onClick={() =>
-                            updateRepairField(
-                              index,
-                              "signatureSupervisor",
-                              null,
-                            )
-                          }
-                          className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
-                        >
-                          <BiX size={14} />
-                        </button>
-                      </>
-                    ) : (
-                      <div className="text-center space-y-2">
-                        <BiUserCheck
-                          className="text-gray-400 mx-auto"
-                          size={24}
-                        />
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() =>
-                              signRepairStandard(index, "signatureSupervisor")
-                            }
-                            className="px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                          >
-                            Assinar
-                          </button>
-                          <label className="px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                            <BiUpload size={12} className="inline mr-1" />
-                            Upload
-                            <input
-                              type="file"
-                              className="hidden"
-                              accept="image/*"
-                              onChange={(e) =>
-                                handleRepairSignature(
-                                  index,
-                                  "signatureSupervisor",
-                                  e.target.files?.[0] || null,
-                                )
-                              }
-                            />
-                          </label>
-                        </div>
-                      </div>
-                    )}
+                      <SignatureSelector
+                      value={log.signatureSupervisor}
+                      onChange={(v) => updateRepairField(index, "signatureSupervisor", v)}
+                    />
                   </div>
                 </div>
               </div>
