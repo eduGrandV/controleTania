@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.date-input-placeholder::-webkit-datetime-edit{
+  color: transparent;
+}
+
+.date-input-placeholder:invalid::before{
+  content: "dd/mm/aaaa";
+  color:#0000;
+  position: absolute;
+
+
+}

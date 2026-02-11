@@ -18,7 +18,6 @@ import {
   BiPackage,
 } from "react-icons/bi";
 
-
 const CHLORINE_PRODUCTS = [
   {
     id: "vegan_san",
@@ -100,9 +99,21 @@ const PRE_OP_ITEMS = [
     item: "As tubulações estão funcionando corretamente?",
   },
   { id: 20, category: "Limpeza", item: "As paredes estão limpas?" },
-  { id: 21, category: "Segurança", item: "Os dispositivos de segurança dos portões de acesso, portas e janelas estão funcionando adequadamente e sem sinal de violação?" },
-  { id: 22, category: "Instalações", item: "Reparações temporárias estão sendo observadas?" },
-  { id: 23, category: "Segurança", item: "As colméias (frio) se encontra em bom estado e sem sinal de violação?" },
+  {
+    id: 21,
+    category: "Segurança",
+    item: "Os dispositivos de segurança dos portões de acesso, portas e janelas estão funcionando adequadamente e sem sinal de violação?",
+  },
+  {
+    id: 22,
+    category: "Instalações",
+    item: "Reparações temporárias estão sendo observadas?",
+  },
+  {
+    id: 23,
+    category: "Segurança",
+    item: "As colméias (frio) se encontra em bom estado e sem sinal de violação?",
+  },
 ];
 
 const WEEK_DAYS = [
@@ -170,7 +181,6 @@ const CLEANING_PRODUCTS = [
   },
 ];
 
-
 type TabType = "pre_inspecao" | "cloro_agua" | "recebimento";
 type ProductType =
   | "sanclor"
@@ -228,7 +238,6 @@ export default function ControleOperacionalMaster() {
   const [selectedProduct, setSelectedProduct] =
     useState<ProductType>("sanclor");
 
-
   const [preOpInfo, setPreOpInfo] = useState({
     week: "",
     isEmbaladora: true,
@@ -261,7 +270,6 @@ export default function ControleOperacionalMaster() {
     },
   ]);
 
-
   const [chlorineLogs, setChlorineLogs] = useState<ChlorineLog[]>([
     {
       id: 1,
@@ -287,7 +295,6 @@ export default function ControleOperacionalMaster() {
     },
   ]);
 
-
   const [receiptLogs, setReceiptLogs] = useState<ReceiptLog[]>([
     {
       id: 1,
@@ -302,9 +309,6 @@ export default function ControleOperacionalMaster() {
     },
   ]);
 
-
-
-
   const handleSignatureList = (
     setter: any,
     list: any[],
@@ -317,51 +321,9 @@ export default function ControleOperacionalMaster() {
     setter(newList);
   };
 
-
   const handleSignatureCoordinator = (value: string | null) => {
     setPreOpInfo({ ...preOpInfo, coordinator: value });
   };
-
-  const SignatureCell = ({ sig, onSign, onUpload, onRemove }: any) => (
-    <div className="h-12 w-full flex items-center justify-center relative group border border-gray-300 rounded-lg bg-white hover:border-blue-400 transition-colors">
-      {sig ? (
-        <>
-          <img
-            src={sig}
-            alt="Assinatura"
-            className="h-10 object-contain max-w-full"
-          />
-          <button
-            onClick={onRemove}
-            className="group-hover:block absolute -top-2 -right-2 bg-red-500 text-white text-xs w-6 h-6 rounded-full shadow-md z-10 flex items-center justify-center hover:bg-red-600 transition-colors"
-            title="Remover assinatura"
-          >
-            ×
-          </button>
-        </>
-      ) : (
-        <div className="flex gap-2 items-center">
-          <button
-            onClick={onSign}
-            className="px-3 py-1.5 bg-linear-to-r from-blue-50 to-blue-100 text-blue-700 text-sm font-semibold rounded-md border border-blue-200 hover:from-blue-100 hover:to-blue-200 hover:border-blue-300 transition-all"
-            title="Assinar digitalmente"
-          >
-            Eu
-          </button>
-          <label className="px-3 py-1.5 bg-linear-to-r from-orange-50 to-orange-100 text-orange-700 text-sm font-semibold rounded-md border border-orange-200 hover:from-orange-100 hover:to-orange-200 hover:border-orange-300 transition-all cursor-pointer">
-            Upload
-            <input
-              type="file"
-              className="hidden"
-              accept="image/*"
-              onChange={onUpload}
-            />
-          </label>
-        </div>
-      )}
-    </div>
-  );
-
 
   const calculatePreOpStats = () => {
     let totalChecks = 0;
@@ -459,7 +421,6 @@ export default function ControleOperacionalMaster() {
     setPreOpActions(newActions);
   };
 
-
   const addChlorineRow = () =>
     setChlorineLogs([
       ...chlorineLogs,
@@ -485,7 +446,6 @@ export default function ControleOperacionalMaster() {
     setChlorineLogs(newLogs);
   };
 
-
   const addWaterRow = () =>
     setWaterLogs([
       ...waterLogs,
@@ -508,7 +468,6 @@ export default function ControleOperacionalMaster() {
     }
     setWaterLogs(newLogs);
   };
-
 
   const toggleReceipt = (
     idx: number,
@@ -740,16 +699,27 @@ export default function ControleOperacionalMaster() {
                   {/* Estatísticas Gerais (Resumo) */}
                   <div className="lg:w-64">
                     <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm h-full">
-                      <h3 className="font-bold text-gray-900 mb-3 text-center">Resumo</h3>
+                      <h3 className="font-bold text-gray-900 mb-3 text-center">
+                        Resumo
+                      </h3>
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span>Verificações:</span> <span className="font-bold">{preOpStats.totalChecks}</span>
+                          <span>Verificações:</span>{" "}
+                          <span className="font-bold">
+                            {preOpStats.totalChecks}
+                          </span>
                         </div>
                         <div className="flex justify-between text-sm text-green-700">
-                          <span>Conformes:</span> <span className="font-bold">{preOpStats.yesCount}</span>
+                          <span>Conformes:</span>{" "}
+                          <span className="font-bold">
+                            {preOpStats.yesCount}
+                          </span>
                         </div>
                         <div className="flex justify-between text-sm text-red-700">
-                          <span>Não Conformes:</span> <span className="font-bold">{preOpStats.noCount}</span>
+                          <span>Não Conformes:</span>{" "}
+                          <span className="font-bold">
+                            {preOpStats.noCount}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -770,7 +740,10 @@ export default function ControleOperacionalMaster() {
                           </div>
                         </th>
                         {WEEK_DAYS.map((day) => (
-                          <th key={day.short} className="p-3 text-center font-semibold text-gray-700 w-24">
+                          <th
+                            key={day.short}
+                            className="p-3 text-center font-semibold text-gray-700 w-24"
+                          >
                             {day.short}
                           </th>
                         ))}
@@ -778,10 +751,15 @@ export default function ControleOperacionalMaster() {
                     </thead>
                     <tbody>
                       {preOpData.map((row, idx) => (
-                        <tr key={row.id} className="border-t border-gray-200 hover:bg-indigo-50/50 transition-colors">
+                        <tr
+                          key={row.id}
+                          className="border-t border-gray-200 hover:bg-indigo-50/50 transition-colors"
+                        >
                           <td className="p-4 font-medium text-gray-900 sticky left-0 bg-white z-10">
                             <div className="flex items-center gap-3">
-                              <div className={`px-3 py-1 rounded-full text-xs font-medium ${CATEGORY_COLORS[row.category]}`}>
+                              <div
+                                className={`px-3 py-1 rounded-full text-xs font-medium ${CATEGORY_COLORS[row.category]}`}
+                              >
                                 {row.category}
                               </div>
                               <span>{row.item}</span>
@@ -793,16 +771,25 @@ export default function ControleOperacionalMaster() {
                               onClick={() => togglePreOp(idx, day.short)}
                               className={`p-3 text-center cursor-pointer transition-all ${
                                 //@ts-ignore
-                                row.checks[day.short] === "S" ? "bg-green-50 text-green-800" :
-                                  //@ts-ignore
-                                  row.checks[day.short] === "N" ? "bg-red-50 text-red-800" : "hover:bg-gray-50"
+                                row.checks[day.short] === "S"
+                                  ? "bg-green-50 text-green-800"
+                                  : //@ts-ignore
+                                  row.checks[day.short] === "N"
+                                    ? "bg-red-50 text-red-800"
+                                    : "hover:bg-gray-50"
                                 }`}
                             >
-                              {//@ts-ignore
-                                row.checks[day.short] === "S" ? <BiCheckCircle className="text-green-600 text-xl mx-auto" /> :
-                                  //@ts-ignore
-                                  row.checks[day.short] === "N" ? <BiXCircle className="text-red-600 text-xl mx-auto" /> :
-                                    <span className="text-gray-300">-</span>}
+                              {
+                                //@ts-ignore
+                                row.checks[day.short] === "S" ? (
+                                  <BiCheckCircle className="text-green-600 text-xl mx-auto" />
+                                ) : //@ts-ignore
+                                  row.checks[day.short] === "N" ? (
+                                    <BiXCircle className="text-red-600 text-xl mx-auto" />
+                                  ) : (
+                                    <span className="text-gray-300">-</span>
+                                  )
+                              }
                             </td>
                           ))}
                         </tr>
@@ -839,42 +826,98 @@ export default function ControleOperacionalMaster() {
 
                 <div className="space-y-4">
                   {preOpActions.map((action, idx) => (
-                    <div key={action.id} className="bg-white rounded-xl border border-red-100 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div
+                      key={action.id}
+                      className="bg-white rounded-xl border border-red-100 p-5 shadow-sm hover:shadow-md transition-shadow"
+                    >
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
                         <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">Data</label>
-                          <input type="date" value={action.date} onChange={(e) => updateAction(idx, "date", e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500" />
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Data
+                          </label>
+                          <input
+                            type="date"
+                            value={action.date}
+                            onChange={(e) =>
+                              updateAction(idx, "date", e.target.value)
+                            }
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+                          />
                         </div>
                         <div className="lg:col-span-2">
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">Item</label>
-                          <input type="text" value={action.item} onChange={(e) => updateAction(idx, "item", e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500" placeholder="Item não conforme" />
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Item
+                          </label>
+                          <input
+                            type="text"
+                            value={action.item}
+                            onChange={(e) =>
+                              updateAction(idx, "item", e.target.value)
+                            }
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+                            placeholder="Item não conforme"
+                          />
                         </div>
                         <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">Status</label>
-                          <select value={action.status} onChange={(e) => updateActionStatus(idx, e.target.value as ActionPlan["status"])} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500">
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Status
+                          </label>
+                          <select
+                            value={action.status}
+                            onChange={(e) =>
+                              updateActionStatus(
+                                idx,
+                                e.target.value as ActionPlan["status"],
+                              )
+                            }
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+                          >
                             <option value="pendente">Pendente</option>
                             <option value="em_andamento">Em Andamento</option>
                             <option value="concluido">Concluído</option>
                           </select>
                         </div>
                         <div className="lg:col-span-2">
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">Responsável (Assinatura)</label>
-                          <SignatureCell
-                            sig={action.responsible}
-                            onSign={() => handleSignatureList(setPreOpActions, preOpActions, idx, "responsible", "/raivans.png")}
-                            onUpload={(e: any) => e.target.files && handleSignatureList(setPreOpActions, preOpActions, idx, "responsible", URL.createObjectURL(e.target.files[0]))}
-                            onRemove={() => handleSignatureList(setPreOpActions, preOpActions, idx, "responsible", null)}
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Responsável (Assinatura)
+                          </label>
+                          <SignatureSelector
+                            value={preOpInfo.coordinator}
+                            onChange={(v) => {
+                              console.log("Selecionado", v);
+                              handleSignatureCoordinator(v);
+
+                            }}
                           />
+
                         </div>
                       </div>
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">Não Conformidade Identificada</label>
-                          <textarea value={action.nonConformity} onChange={(e) => updateAction(idx, "nonConformity", e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500" placeholder="Descrição..." />
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Não Conformidade Identificada
+                          </label>
+                          <textarea
+                            value={action.nonConformity}
+                            onChange={(e) =>
+                              updateAction(idx, "nonConformity", e.target.value)
+                            }
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+                            placeholder="Descrição..."
+                          />
                         </div>
                         <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-2">Ação Corretiva Proposta</label>
-                          <textarea value={action.action} onChange={(e) => updateAction(idx, "action", e.target.value)} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500" placeholder="Ação..." />
+                          <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            Ação Corretiva Proposta
+                          </label>
+                          <textarea
+                            value={action.action}
+                            onChange={(e) =>
+                              updateAction(idx, "action", e.target.value)
+                            }
+                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500"
+                            placeholder="Ação..."
+                          />
                         </div>
                       </div>
                     </div>
@@ -892,8 +935,13 @@ export default function ControleOperacionalMaster() {
                 <div className="flex items-center gap-3 mb-4">
                   <BiInfoCircle className="text-2xl text-cyan-700" />
                   <div>
-                    <h3 className="font-bold text-cyan-900 text-lg">Produto: {CHLORINE_PRODUCTS[0].name}</h3>
-                    <p className="text-sm text-gray-600">{CHLORINE_PRODUCTS[0].dosage} | {CHLORINE_PRODUCTS[0].type}</p>
+                    <h3 className="font-bold text-cyan-900 text-lg">
+                      Produto: {CHLORINE_PRODUCTS[0].name}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {CHLORINE_PRODUCTS[0].dosage} |{" "}
+                      {CHLORINE_PRODUCTS[0].type}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -901,8 +949,16 @@ export default function ControleOperacionalMaster() {
               {/* Tabela Cloro */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-gray-900 text-lg flex items-center gap-2"><BiClipboard className="text-cyan-700" /> Monitoramento Diário do Cloro</h3>
-                  <button onClick={addChlorineRow} className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-cyan-600 to-cyan-700 text-white rounded-lg hover:from-cyan-700 hover:to-cyan-800 shadow-sm"><BiPlus /> Adicionar</button>
+                  <h3 className="font-bold text-gray-900 text-lg flex items-center gap-2">
+                    <BiClipboard className="text-cyan-700" /> Monitoramento
+                    Diário do Cloro
+                  </h3>
+                  <button
+                    onClick={addChlorineRow}
+                    className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-cyan-600 to-cyan-700 text-white rounded-lg hover:from-cyan-700 hover:to-cyan-800 shadow-sm"
+                  >
+                    <BiPlus /> Adicionar
+                  </button>
                 </div>
                 <div className="bg-white rounded-xl border border-gray-300 shadow-sm overflow-hidden overflow-x-auto">
                   <table className="min-w-full text-sm">
@@ -918,13 +974,78 @@ export default function ControleOperacionalMaster() {
                     </thead>
                     <tbody>
                       {chlorineLogs.map((log, idx) => (
-                        <tr key={log.id} className="border-t border-gray-200 hover:bg-cyan-50/30">
-                          <td className="p-3"><input type="date" value={log.date} onChange={e => updateChlorine(idx, 'date', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
-                          <td className="p-3"><input type="time" value={log.time} onChange={e => updateChlorine(idx, 'time', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
-                          <td className="p-3"><input type="number" value={log.ppm} onChange={e => updateChlorine(idx, 'ppm', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
-                          <td className="p-3"><input type="number" value={log.ph} onChange={e => updateChlorine(idx, 'ph', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
-                          <td className="p-3"><input type="text" value={log.observation} onChange={e => updateChlorine(idx, 'observation', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
-                          <td className="p-3"><input type="text" value={log.correctiveAction} onChange={e => updateChlorine(idx, 'correctiveAction', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
+                        <tr
+                          key={log.id}
+                          className="border-t border-gray-200 hover:bg-cyan-50/30"
+                        >
+                          <td className="p-3">
+                            <input
+                              type="date"
+                              value={log.date}
+                              onChange={(e) =>
+                                updateChlorine(idx, "date", e.target.value)
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input
+                              type="time"
+                              value={log.time}
+                              onChange={(e) =>
+                                updateChlorine(idx, "time", e.target.value)
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input
+                              type="number"
+                              value={log.ppm}
+                              onChange={(e) =>
+                                updateChlorine(idx, "ppm", e.target.value)
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input
+                              type="number"
+                              value={log.ph}
+                              onChange={(e) =>
+                                updateChlorine(idx, "ph", e.target.value)
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input
+                              type="text"
+                              value={log.observation}
+                              onChange={(e) =>
+                                updateChlorine(
+                                  idx,
+                                  "observation",
+                                  e.target.value,
+                                )
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input
+                              type="text"
+                              value={log.correctiveAction}
+                              onChange={(e) =>
+                                updateChlorine(
+                                  idx,
+                                  "correctiveAction",
+                                  e.target.value,
+                                )
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -935,8 +1056,16 @@ export default function ControleOperacionalMaster() {
               {/* Tabela Água */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-gray-900 text-lg flex items-center gap-2"><BiWater className="text-blue-700" /> Registro de Troca de Água</h3>
-                  <button onClick={addWaterRow} className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 shadow-sm"><BiPlus /> Adicionar</button>
+                  <h3 className="font-bold text-gray-900 text-lg flex items-center gap-2">
+                    <BiWater className="text-blue-700" /> Registro de Troca de
+                    Água
+                  </h3>
+                  <button
+                    onClick={addWaterRow}
+                    className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 shadow-sm"
+                  >
+                    <BiPlus /> Adicionar
+                  </button>
                 </div>
                 <div className="bg-white rounded-xl border border-gray-300 shadow-sm overflow-hidden overflow-x-auto">
                   <table className="min-w-full text-sm">
@@ -952,18 +1081,74 @@ export default function ControleOperacionalMaster() {
                     </thead>
                     <tbody>
                       {waterLogs.map((log, idx) => (
-                        <tr key={log.id} className="border-t border-gray-200 hover:bg-blue-50/30">
+                        <tr
+                          key={log.id}
+                          className="border-t border-gray-200 hover:bg-blue-50/30"
+                        >
                           <td className="p-3">
-                            <select value={log.type} onChange={e => updateWater(idx, 'type', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1">
+                            <select
+                              value={log.type}
+                              onChange={(e) =>
+                                updateWater(idx, "type", e.target.value)
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            >
                               <option value="Europa">Europa</option>
                               <option value="Hidrotérmico">Hidrotérmico</option>
                             </select>
                           </td>
-                          <td className="p-3"><input type="text" value={log.tankNumber} disabled={log.type === 'Europa'} onChange={e => updateWater(idx, 'tankNumber', e.target.value)} className={`w-full border border-gray-300 rounded px-2 py-1 ${log.type === 'Europa' ? 'bg-gray-100' : ''}`} /></td>
-                          <td className="p-3"><input type="date" value={log.date} onChange={e => updateWater(idx, 'date', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
-                          <td className="p-3"><input type="text" value={log.quantity} onChange={e => updateWater(idx, 'quantity', e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
-                          <td className="p-3 w-32"><SignatureCell sig={log.responsible} onSign={() => handleSignatureList(setWaterLogs, waterLogs, idx, 'responsible', '/raivans.png')} onUpload={(e: any) => e.target.files && handleSignatureList(setWaterLogs, waterLogs, idx, 'responsible', URL.createObjectURL(e.target.files[0]))} onRemove={() => handleSignatureList(setWaterLogs, waterLogs, idx, 'responsible', null)} /></td>
-                          <td className="p-3 w-32"><SignatureCell sig={log.monitor} onSign={() => handleSignatureList(setWaterLogs, waterLogs, idx, 'monitor', '/raivans.png')} onUpload={(e: any) => e.target.files && handleSignatureList(setWaterLogs, waterLogs, idx, 'monitor', URL.createObjectURL(e.target.files[0]))} onRemove={() => handleSignatureList(setWaterLogs, waterLogs, idx, 'monitor', null)} /></td>
+                          <td className="p-3">
+                            <input
+                              type="text"
+                              value={log.tankNumber}
+                              disabled={log.type === "Europa"}
+                              onChange={(e) =>
+                                updateWater(idx, "tankNumber", e.target.value)
+                              }
+                              className={`w-full border border-gray-300 rounded px-2 py-1 ${log.type === "Europa" ? "bg-gray-100" : ""}`}
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input
+                              type="date"
+                              value={log.date}
+                              onChange={(e) =>
+                                updateWater(idx, "date", e.target.value)
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
+                          <td className="p-3">
+                            <input
+                              type="text"
+                              value={log.quantity}
+                              onChange={(e) =>
+                                updateWater(idx, "quantity", e.target.value)
+                              }
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
+                          <td className="p-3 w-32">
+                            <SignatureSelector
+                              value={preOpInfo.coordinator}
+                              onChange={(v) => {
+                                console.log("Selecionado", v);
+                                handleSignatureCoordinator(v);
+
+                              }}
+                            />
+
+                          </td>
+                          <td className="p-3 w-32">
+                            <SignatureSelector
+                              value={preOpInfo.coordinator}
+                              onChange={(v) => {
+                                console.log("Selecionado", v);
+                                handleSignatureCoordinator(v);
+
+                              }}
+                            />
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -979,8 +1164,12 @@ export default function ControleOperacionalMaster() {
               <div className="bg-white p-4 rounded-xl border border-gray-300 shadow-sm mb-4">
                 <h3 className="font-bold mb-2">Selecione o Produto:</h3>
                 <div className="flex flex-wrap gap-2">
-                  {CLEANING_PRODUCTS.map(prod => (
-                    <button key={prod.id} onClick={() => setSelectedProduct(prod.id as ProductType)} className={`px-3 py-2 rounded-lg border text-sm ${selectedProduct === prod.id ? 'bg-orange-500 text-white border-orange-600' : 'bg-white text-gray-700 hover:bg-orange-50'}`}>
+                  {CLEANING_PRODUCTS.map((prod) => (
+                    <button
+                      key={prod.id}
+                      onClick={() => setSelectedProduct(prod.id as ProductType)}
+                      className={`px-3 py-2 rounded-lg border text-sm ${selectedProduct === prod.id ? "bg-orange-500 text-white border-orange-600" : "bg-white text-gray-700 hover:bg-orange-50"}`}
+                    >
                       {prod.icon} {prod.name}
                     </button>
                   ))}
@@ -989,49 +1178,135 @@ export default function ControleOperacionalMaster() {
 
               <div className="bg-white rounded-xl border border-gray-300 shadow-sm overflow-hidden overflow-x-auto">
                 <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                  <h3 className="font-bold text-gray-900 flex items-center gap-2"><BiPackage className="text-orange-600" /> Inspeção: {getCurrentProduct(selectedProduct).name}</h3>
-                  <button onClick={addReceiptRow} className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-600 to-orange-700 text-white rounded-lg hover:from-orange-700 hover:to-orange-800 shadow-sm text-sm"><BiPlus /> Adicionar</button>
+                  <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                    <BiPackage className="text-orange-600" /> Inspeção:{" "}
+                    {getCurrentProduct(selectedProduct).name}
+                  </h3>
+                  <button
+                    onClick={addReceiptRow}
+                    className="flex items-center gap-2 px-4 py-2 bg-linear-to-r from-orange-600 to-orange-700 text-white rounded-lg hover:from-orange-700 hover:to-orange-800 shadow-sm text-sm"
+                  >
+                    <BiPlus /> Adicionar
+                  </button>
                 </div>
                 <table className="min-w-full text-sm">
                   <thead className="bg-orange-50">
                     <tr>
                       <th className="p-3 text-left">Data</th>
-                      <th className="p-3 text-center">Produto Correto  {getCurrentProduct(selectedProduct).name}?</th>
-                      <th className="p-3 text-center">Composição  {getCurrentProduct(selectedProduct).composition}?</th>
-                      <th className="p-3 text-center">{getCurrentProduct(selectedProduct).packaging} ?</th>
-                      <th className="p-3 text-center">Padrão exigido de acordo com a exigência?</th>
-                      <th className="p-3 text-center">O material que veio cumpre com as exigências do pedido?</th>
+                      <th className="p-3 text-center">
+                        Produto Correto{" "}
+                        {getCurrentProduct(selectedProduct).name}?
+                      </th>
+                      <th className="p-3 text-center">
+                        Composição{" "}
+                        {getCurrentProduct(selectedProduct).composition}?
+                      </th>
+                      <th className="p-3 text-center">
+                        {getCurrentProduct(selectedProduct).packaging} ?
+                      </th>
+                      <th className="p-3 text-center">
+                        Padrão exigido de acordo com a exigência?
+                      </th>
+                      <th className="p-3 text-center">
+                        O material que veio cumpre com as exigências do pedido?
+                      </th>
                       <th className="p-3 text-left w-48">Responsável</th>
                       <th className="p-3 w-10"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {getFilteredLogs().map((log, idx) => {
-                      const originalIdx = receiptLogs.findIndex(l => l.id === log.id);
+                      const originalIdx = receiptLogs.findIndex(
+                        (l) => l.id === log.id,
+                      );
                       return (
-                        <tr key={log.id} className="border-t border-gray-200 hover:bg-orange-50/30">
-                          <td className="p-3"><input type="date" value={log.date} onChange={e => { const n = [...receiptLogs]; n[originalIdx].date = e.target.value; setReceiptLogs(n) }} className="w-full border border-gray-300 rounded px-2 py-1" /></td>
+                        <tr
+                          key={log.id}
+                          className="border-t border-gray-200 hover:bg-orange-50/30"
+                        >
+                          <td className="p-3">
+                            <input
+                              type="date"
+                              value={log.date}
+                              onChange={(e) => {
+                                const n = [...receiptLogs];
+                                n[originalIdx].date = e.target.value;
+                                setReceiptLogs(n);
+                              }}
+                              className="w-full border border-gray-300 rounded px-2 py-1"
+                            />
+                          </td>
 
-                          {['isCorrectProduct', 'isCompositionOk', 'isPackagingOk', 'isStandardOk', 'requirementsMet'].map(field => (
+                          {[
+                            "isCorrectProduct",
+                            "isCompositionOk",
+                            "isPackagingOk",
+                            "isStandardOk",
+                            "requirementsMet",
+                          ].map((field) => (
                             <td key={field} className="p-3 text-center">
                               <div className="flex justify-center gap-2">
-                                <label className="flex items-center gap-1 cursor-pointer"><input type="radio" name={`${field}-${log.id}`} checked={log[field as keyof ReceiptLog] === true} onChange={() => toggleReceipt(originalIdx, field as keyof ReceiptLog, true)} className="accent-green-600" /><span className="text-xs">Sim</span></label>
-                                <label className="flex items-center gap-1 cursor-pointer"><input type="radio" name={`${field}-${log.id}`} checked={log[field as keyof ReceiptLog] === false} onChange={() => toggleReceipt(originalIdx, field as keyof ReceiptLog, false)} className="accent-red-600" /><span className="text-xs">Não</span></label>
+                                <label className="flex items-center gap-1 cursor-pointer">
+                                  <input
+                                    type="radio"
+                                    name={`${field}-${log.id}`}
+                                    checked={
+                                      log[field as keyof ReceiptLog] === true
+                                    }
+                                    onChange={() =>
+                                      toggleReceipt(
+                                        originalIdx,
+                                        field as keyof ReceiptLog,
+                                        true,
+                                      )
+                                    }
+                                    className="accent-green-600"
+                                  />
+                                  <span className="text-xs">Sim</span>
+                                </label>
+                                <label className="flex items-center gap-1 cursor-pointer">
+                                  <input
+                                    type="radio"
+                                    name={`${field}-${log.id}`}
+                                    checked={
+                                      log[field as keyof ReceiptLog] === false
+                                    }
+                                    onChange={() =>
+                                      toggleReceipt(
+                                        originalIdx,
+                                        field as keyof ReceiptLog,
+                                        false,
+                                      )
+                                    }
+                                    className="accent-red-600"
+                                  />
+                                  <span className="text-xs">Não</span>
+                                </label>
                               </div>
                             </td>
                           ))}
 
                           <td className="p-3">
-                            <SignatureCell
-                              sig={log.responsible}
-                              onSign={() => handleSignatureList(setReceiptLogs, receiptLogs, originalIdx, 'responsible', '/raivans.png')}
-                              onUpload={(e: any) => e.target.files && handleSignatureList(setReceiptLogs, receiptLogs, originalIdx, 'responsible', URL.createObjectURL(e.target.files[0]))}
-                              onRemove={() => handleSignatureList(setReceiptLogs, receiptLogs, originalIdx, 'responsible', null)}
+                            <SignatureSelector
+                              value={preOpInfo.coordinator}
+                              onChange={(v) => {
+                                console.log("Selecionado", v);
+                                handleSignatureCoordinator(v);
+                              }}
                             />
                           </td>
-                          <td className="p-3 text-center cursor-pointer text-red-500" onClick={() => setReceiptLogs(receiptLogs.filter((_, i) => i !== originalIdx))}><BiTrash /></td>
+                          <td
+                            className="p-3 text-center cursor-pointer text-red-500"
+                            onClick={() =>
+                              setReceiptLogs(
+                                receiptLogs.filter((_, i) => i !== originalIdx),
+                              )
+                            }
+                          >
+                            <BiTrash />
+                          </td>
                         </tr>
-                      )
+                      );
                     })}
                   </tbody>
                 </table>

@@ -477,9 +477,9 @@ export default function ControleHigienizacaoMaster() {
 
 
 
- 
 
-  
+
+
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-3 md:p-6 font-sans text-sm">
@@ -742,11 +742,10 @@ export default function ControleHigienizacaoMaster() {
                       <button
                         key={key}
                         onClick={() => handleTabChange(key as AreaKey)}
-                        className={`w-full text-left p-3 rounded-lg mb-2 transition-all duration-200 ${
-                          currentTab === key
-                            ? "bg-linear-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-[1.02] border border-blue-300"
-                            : "hover:bg-gray-50 border border-transparent hover:border-gray-200 text-gray-700"
-                        }`}
+                        className={`w-full text-left p-3 rounded-lg mb-2 transition-all duration-200 ${currentTab === key
+                          ? "bg-linear-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-[1.02] border border-blue-300"
+                          : "hover:bg-gray-50 border border-transparent hover:border-gray-200 text-gray-700"
+                          }`}
                       >
                         <div className="flex justify-between items-start">
                           <span className="font-medium text-sm">
@@ -892,7 +891,7 @@ export default function ControleHigienizacaoMaster() {
               {/* TABELA */}
               <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200 shadow-sm bg-white">
                 {/* Container interno com largura mínima para forçar o layout correto */}
-                <div className="min-w-max">
+                <div className="w-full">
                   <table className="w-full text-left border-collapse">
                     <thead className="bg-gray-50 sticky top-0 z-20 shadow-sm">
                       <tr>
@@ -978,10 +977,11 @@ export default function ControleHigienizacaoMaster() {
                             <input
                               type="date"
                               value={log.date}
+                              required
                               onChange={(e) =>
                                 updateField(index, "date", e.target.value)
                               }
-                              className="w-32.5 bg-white border border-gray-200 rounded-lg py-2 px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              className="w-32.5 bg-gray-200 border border-gray-200 rounded-lg py-2 px-3 text-sm text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             />
                           </td>
 
@@ -990,16 +990,17 @@ export default function ControleHigienizacaoMaster() {
                             <input
                               type="time"
                               value={log.time}
+
                               onChange={(e) =>
                                 updateField(index, "time", e.target.value)
                               }
-                              className="w-25 bg-white border border-gray-200 rounded-lg py-2 px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                              className="w-25 bg-gray-200 border border-gray-200 rounded-lg py-2 px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                             />
                           </td>
 
                           {/* PRODUTOS */}
-                          <td className="py-3 px-4">
-                            <div className="flex flex-wrap gap-3">
+                          <td className="py-3 px-4 2xl:flex justify-center items-center gap-0.5 w-full">
+                            <div className="flex gap-3">
                               {activeConfig.products.map((prod) => (
                                 <label
                                   key={prod.key}
@@ -1016,11 +1017,10 @@ export default function ControleHigienizacaoMaster() {
                                     />
                                     <div
                                       className={`w-4 h-4 rounded border flex items-center justify-center transition-all
-                        ${
-                          log.checks?.[prod.key]
-                            ? "bg-blue-500 border-blue-500"
-                            : "bg-white border-gray-300 group-hover/checkbox:border-blue-400"
-                        }`}
+                        ${log.checks?.[prod.key]
+                                          ? "bg-blue-500 border-blue-500"
+                                          : "bg-white border-gray-300 group-hover/checkbox:border-blue-400"
+                                        }`}
                                     >
                                       {log.checks?.[prod.key] && (
                                         <svg
@@ -1059,12 +1059,12 @@ export default function ControleHigienizacaoMaster() {
                           {/* ASSINATURA */}
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-2 justify-center sm:justify-start">
-                              <SignatureSelector 
-                              value={log.signature}
-                              onChange={(v) =>
-                                updateField(index, "signature", v||"")
-                              }
-                              
+                              <SignatureSelector
+                                value={log.signature}
+                                onChange={(v) =>
+                                  updateField(index, "signature", v || "")
+                                }
+
                               />
                             </div>
                           </td>

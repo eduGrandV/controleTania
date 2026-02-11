@@ -113,13 +113,6 @@ export default function ControlePosColheitaMaster() {
     return postHarvestRecords.filter(record => record.treatmentType === selectedTreatment);
   };
 
-
-  const handleSignature = (setter: any, list: any[], index: number, field: string, value: string | null) => {
-    const newList = [...list];
-    newList[index][field] = value;
-    setter(newList);
-  };
-
   const addPostHarvestRecord = () => {
     const treatment = getTreatmentInfo(selectedTreatment);
     setPostHarvestRecords([...postHarvestRecords, {

@@ -63,11 +63,11 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
     const imgSrc = isUpload ? value : `/assinaturas/${value}.png`;
 
     return (
-      <div className="relative group w-full h-12 flex items-center justify-center border border-green-300 bg-green-50 rounded-lg">
+      <div className="relative group w-full h-10 lg:h-12 flex   items-center justify-center border border-green-300 bg-green-50 rounded-lg">
         <img
           src={imgSrc}
           alt="Assinatura"
-          className="h-10 object-contain"
+          className="h-8 md:h-10 object-contain max-w-full"
           onError={(e) => {
             if (!isUpload) {
 
@@ -79,7 +79,7 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
 
         <button
           onClick={() => onChange(null)}
-          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute -top-2 -right-2 z-20 bg-red-500 text-white rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center shadow-md"
         >
           <BiX />
         </button>
@@ -89,7 +89,7 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
 
 
   return (
-    <div className="relative w-full flex gap-2">
+    <div className="relative w-full flex lg:flex lg:flex-col lg:w-1/2 gap-2 ">
       {/* Input de arquivo oculto */}
       <input
         type="file"
@@ -100,9 +100,9 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
       />
 
       <div className="relative w-full">
-        <BiUser className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+        <BiUser className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-sm md:text-base" />
         <select
-          className="text-black w-full pl-7 pr-2 py-1 text-xs border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer"
+          className="text-black w-full pl-7 pr-2 py-1 md:py-2 text-xs md:text-sm border border-gray-300 rounded-lg appearance-none bg-white focus:ring-2 focus:ring-blue-500 outline-none cursor-pointer"
           onChange={(e) => onChange(e.target.value)}
           value=""
         >
@@ -117,7 +117,7 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
       <button
         type="button"
         onClick={() => fileInputRef.current?.click()}
-        className="px-2 bg-white border border-gray-300 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-blue-600 focus:ring-2 focus:ring-blue-500 transition-colors"
+        className="px-3 py-1 md:py-2 bg-white border border-gray-300 rounded-lg text-gray-500 hover:bg-gray-50 hover:text-blue-600 focus:ring-2 focus:ring-blue-500 transition-colors text-xs md:text-sm"
         title="Fazer upload de assinatura"
       >
         <BiUpload size={16} />
