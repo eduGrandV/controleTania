@@ -4,6 +4,7 @@ import { BiUser, BiX, BiUpload } from "react-icons/bi";
 // Lista de nomes (Mantive a mesma)
 const USERS = [
   "ADRIEL DOS S.SILVA",
+  "Cesar frank",
   "ANTONIO JHEYSON SILVA ALVES",
   "CARLIENE F DA SILVA",
   "CLEISON NUNES DE SOUZA",
@@ -107,7 +108,7 @@ export const SignatureSelector = ({ value, onChange }: Props) => {
         >
           <option value={""} disabled >Assinar...</option>
           {USERS.map((user) => (
-            <option className="text-black" key={user} value={user}>{user}</option>
+            <option className="text-black" key={user} value={user}>{user.toUpperCase()}</option>
           ))}
         </select>
       </div>
